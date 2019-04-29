@@ -43,7 +43,7 @@
     <Property Name="FirstName" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="IsManager" Type="bit" Nullable="false" />
-    <Property Name="Email" Type="nchar" MaxLength="10" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="Lessons">
     <Key>
