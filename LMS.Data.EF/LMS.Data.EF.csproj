@@ -51,11 +51,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AspNetUser.cs">
+      <DependentUpon>LMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Class1.cs" />
     <Compile Include="Course.cs">
       <DependentUpon>LMS.tt</DependentUpon>
     </Compile>
     <Compile Include="CourseCompletion.cs">
+      <DependentUpon>LMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs">
       <DependentUpon>LMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Lesson.cs">
