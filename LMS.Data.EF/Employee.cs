@@ -19,5 +19,7 @@ namespace LMS.Data.EF
         public string LastName { get; set; }
         public bool IsManager { get; set; }
         public string Email { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

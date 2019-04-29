@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using LMS.Data.EF;
 
 namespace IdentitySample.Controllers
 {
@@ -157,7 +158,33 @@ namespace IdentitySample.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
                     ViewBag.Link = callbackUrl;
-                    return View("DisplayEmail");
+
+                    //create the Employee
+                    Employee employee = new Employee();
+                    //props for employee
+                    employee.UserID = user.Id;
+                    employee.Email = user.Email;
+                    employee.FirstName = model.FirstName;
+                    employee.LastName = model.LastName;
+
+                    //create the user, save them
+                    LMSEntities db = new LMSEntities();
+                    //add the user
+                    if (ModelState.IsValid)
+                    {
+                        db.Employees.Add(employee);
+                        db.SaveChanges();
+
+                        //adding them to generic employee role, only authenticated needed as lockdown rule
+                        UserManager.AddToRole(user.Id, "Employee");
+                    }
+                    else
+                    {
+                        return View(model);
+                    }
+
+
+                    return Redirect("/Home/Index");
                 }
                 AddErrors(result);
             }

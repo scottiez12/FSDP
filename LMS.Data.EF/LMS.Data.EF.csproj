@@ -54,7 +54,6 @@
     <Compile Include="AspNetUser.cs">
       <DependentUpon>LMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Class1.cs" />
     <Compile Include="Course.cs">
       <DependentUpon>LMS.tt</DependentUpon>
     </Compile>

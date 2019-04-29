@@ -64,12 +64,13 @@ namespace IdentitySample.Models
 
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Required***")]
+        [EmailAddress(ErrorMessage = "Please enter a valid Email address***")]
+        [StringLength(50, ErrorMessage = "Email must be less than 50 characters***")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required***")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -79,6 +80,21 @@ namespace IdentitySample.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+
+        //adding the props to make the mirror between "Employee" and "ASPnet User"
+        [StringLength(30, ErrorMessage = "Must be 30 characters or less")]
+        [Display(Name = "First Name")]
+        [Required(ErrorMessage = "Required***")]
+        public string FirstName { get; set; }
+
+        [StringLength(50, ErrorMessage = "Must be 50 characters or less")]
+        [Display(Name = "Last Name")]
+        [Required(ErrorMessage = "Required***")]
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Required***")]
+        public bool IsManager { get; set; }
     }
 
     public class ResetPasswordViewModel

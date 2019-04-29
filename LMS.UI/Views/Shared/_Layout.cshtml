@@ -7,6 +7,10 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <!--Custom CSS-->
+    <link href="~/Content/css/_customCSS.css" rel="stylesheet" />
+
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -26,8 +30,13 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
-                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
-                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
+                        <li>@Html.ActionLink("Roles Admin", "Index", "RolesAdmin")</li>
+                        <li>@Html.ActionLink("Users Admin", "Index", "UsersAdmin")</li>
+                        <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
+                        <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
+                        <li>@Html.ActionLink("Course Completions", "Index", "CourseCompletions")</li>
+                        <li>@Html.ActionLink("Lessons", "Index", "Lessons")</li>
+                        <li>@Html.ActionLink("Lessons Viewed", "Index", "LessonViews")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -41,6 +50,8 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
+    <!--Custom JS-->
+    <script src="~/Content/js/_customJS.js"></script>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
