@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="ecf54d5c465a4e579f7a2f780da0206a" Name="Diagram1">
         <EntityTypeShape EntityType="LMSModel.CourseCompletion" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="LMSModel.Cours" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMSModel.Course" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LMSModel.Lesson" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="LMSModel.LessonView" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="LMSModel.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />

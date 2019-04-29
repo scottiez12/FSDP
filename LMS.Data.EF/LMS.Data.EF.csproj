@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="Cours.cs">
+    <Compile Include="Course.cs">
       <DependentUpon>LMS.tt</DependentUpon>
     </Compile>
     <Compile Include="CourseCompletion.cs">

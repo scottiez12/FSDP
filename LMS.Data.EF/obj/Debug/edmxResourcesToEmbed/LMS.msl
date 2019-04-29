@@ -12,7 +12,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Courses">
-      <EntityTypeMapping TypeName="LMSModel.Cours">
+      <EntityTypeMapping TypeName="LMSModel.Course">
         <MappingFragment StoreEntitySet="Courses">
           <ScalarProperty Name="CourseID" ColumnName="CourseID" />
           <ScalarProperty Name="CourseName" ColumnName="CourseName" />

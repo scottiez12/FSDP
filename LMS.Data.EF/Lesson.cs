@@ -28,7 +28,7 @@ namespace LMS.Data.EF
         public string PdfFileName { get; set; }
         public bool IsActive { get; set; }
     
-        public virtual Cours Cours { get; set; }
+        public virtual Course Cours { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LessonView> LessonViews { get; set; }
     }

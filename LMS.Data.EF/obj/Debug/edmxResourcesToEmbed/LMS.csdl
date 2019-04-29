@@ -10,7 +10,7 @@
     <Property Name="DateCompleted" Type="DateTime" Nullable="false" Precision="0" />
     <NavigationProperty Name="Cours" Relationship="Self.FK_CourseCompletions_Courses" FromRole="CourseCompletions" ToRole="Courses" />
   </EntityType>
-  <EntityType Name="Cours">
+  <EntityType Name="Course">
     <Key>
       <PropertyRef Name="CourseID" />
     </Key>
@@ -56,7 +56,7 @@
     <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <Association Name="FK_CourseCompletions_Courses">
-    <End Role="Courses" Type="Self.Cours" Multiplicity="1" />
+    <End Role="Courses" Type="LMSModel.Course" Multiplicity="1" />
     <End Role="CourseCompletions" Type="Self.CourseCompletion" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Courses">
@@ -68,7 +68,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Lessons_Courses">
-    <End Role="Courses" Type="Self.Cours" Multiplicity="1" />
+    <End Role="Courses" Type="LMSModel.Course" Multiplicity="1" />
     <End Role="Lessons" Type="Self.Lesson" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Courses">
@@ -93,7 +93,7 @@
   </Association>
   <EntityContainer Name="LMSEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="CourseCompletions" EntityType="Self.CourseCompletion" />
-    <EntitySet Name="Courses" EntityType="Self.Cours" />
+    <EntitySet Name="Courses" EntityType="LMSModel.Course" />
     <EntitySet Name="Lessons" EntityType="Self.Lesson" />
     <EntitySet Name="LessonViews" EntityType="Self.LessonView" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />

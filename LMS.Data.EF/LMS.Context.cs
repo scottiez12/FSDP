@@ -28,7 +28,7 @@ namespace LMS.Data.EF
         }
     
         public virtual DbSet<CourseCompletion> CourseCompletions { get; set; }
-        public virtual DbSet<Cours> Courses { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Lesson> Lessons { get; set; }
         public virtual DbSet<LessonView> LessonViews { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
