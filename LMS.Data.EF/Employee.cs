@@ -35,5 +35,6 @@ namespace LMS.Data.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LessonView> LessonViews { get; set; }
         public virtual Manager Manager { get; set; }
+        public virtual Job Job { get; set; }
     }
 }

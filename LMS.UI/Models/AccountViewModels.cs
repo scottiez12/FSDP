@@ -62,8 +62,10 @@ namespace IdentitySample.Models
         public bool RememberMe { get; set; }
     }
 
-    public class RegisterViewModel
+    public class RegisterViewModel 
     {
+        
+
         [Required(ErrorMessage = "Required***")]
         [EmailAddress(ErrorMessage = "Please enter a valid Email address***")]
         [StringLength(50, ErrorMessage = "Email must be less than 50 characters***")]
@@ -95,6 +97,14 @@ namespace IdentitySample.Models
 
         [Required(ErrorMessage = "Required***")]
         public bool IsManager { get; set; }
+
+        [Required(ErrorMessage = "Required***")]
+        public int JobID { get; set; }
+
+        [Required(ErrorMessage = "Required***")]
+        public int ReportsToID { get; set; }
+       
+
     }
 
     public class ResetPasswordViewModel

@@ -35,6 +35,7 @@ namespace LMS.Data.EF
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Manager> Managers { get; set; }
+        public virtual DbSet<Job> Jobs { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

@@ -82,10 +82,55 @@ namespace LMS.Data.EF
         [StringLength(50, ErrorMessage = "Email must be less than 50 characters***")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Required***")]
+        public int JobID { get; set; }
+
+        [Required(ErrorMessage = "Required***")]
+        public int ReportsToID { get; set; }
+
+
     }
 
     #endregion
 
+    #region Manager Metadata
+    [MetadataType(typeof(ManagerMetadata))]
+    public partial class Manager { }
+    public class ManagerMetadata
+    {
+
+        [Key]
+        public string UserID { get; set; }
+
+        [Required(ErrorMessage = "Required***")]
+        [StringLength(30, ErrorMessage = "First Name must be less than 30 characters***")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Required***")]
+        [StringLength(50, ErrorMessage = "Last Name must be less than 50 characters***")]
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Required***")]
+        public int JobID { get; set; }
+
+    }
+    #endregion
+
+    #region Job Metadata
+    [MetadataType(typeof(JobMetadata))]
+    public partial class Job { }
+    public class JobMetadata
+    {
+        [Key]
+        public int JobID { get; set; }
+
+        [Required(ErrorMessage = "Required***")]
+        [StringLength(150, ErrorMessage = "Job Name must be less than 150 characters***")]
+        public string JobName { get; set; }
+
+    }
+
+    #endregion
     #region Lesson Metadata
     [MetadataType(typeof(LessonMetadata))]
     public partial class Lesson { }

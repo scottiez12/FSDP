@@ -10,107 +10,112 @@ using LMS.Data.EF;
 
 namespace LMS.UI.Controllers
 {
-    public class EmployeesController : Controller
+    public class ManagersController : Controller
     {
         private LMSEntities db = new LMSEntities();
 
-        // GET: Employees
+        // GET: Managers
         public ActionResult Index()
         {
-            return View(db.Employees.ToList());
+            var managers = db.Managers.Include(m => m.Employee);
+            return View(managers.ToList());
         }
 
-        // GET: Employees/Details/5
+        // GET: Managers/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
-            if (employee == null)
+            Manager manager = db.Managers.Find(id);
+            if (manager == null)
             {
                 return HttpNotFound();
             }
-            return View(employee);
+            return View(manager);
         }
 
-        // GET: Employees/Create
+        // GET: Managers/Create
         public ActionResult Create()
         {
+            ViewBag.UserID = new SelectList(db.Employees, "UserID", "FirstName");
             return View();
         }
 
-        // POST: Employees/Create
+        // POST: Managers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserID,FirstName,LastName,IsManager,Email,JobID,ReportsToID")] Employee employee)
+        public ActionResult Create([Bind(Include = "UserID,FirstName,LastName,JobID")] Manager manager)
         {
             if (ModelState.IsValid)
             {
-                db.Employees.Add(employee);
+                db.Managers.Add(manager);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(employee);
+            ViewBag.UserID = new SelectList(db.Employees, "UserID", "FirstName", manager.UserID);
+            return View(manager);
         }
 
-        // GET: Employees/Edit/5
+        // GET: Managers/Edit/5
         public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
-            if (employee == null)
+            Manager manager = db.Managers.Find(id);
+            if (manager == null)
             {
                 return HttpNotFound();
             }
-            return View(employee);
+            ViewBag.UserID = new SelectList(db.Employees, "UserID", "FirstName", manager.UserID);
+            return View(manager);
         }
 
-        // POST: Employees/Edit/5
+        // POST: Managers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,FirstName,LastName,IsManager,Email,JobID,ReportsToID")] Employee employee)
+        public ActionResult Edit([Bind(Include = "UserID,FirstName,LastName,JobID")] Manager manager)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(employee).State = EntityState.Modified;
+                db.Entry(manager).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(employee);
+            ViewBag.UserID = new SelectList(db.Employees, "UserID", "FirstName", manager.UserID);
+            return View(manager);
         }
 
-        // GET: Employees/Delete/5
+        // GET: Managers/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
-            if (employee == null)
+            Manager manager = db.Managers.Find(id);
+            if (manager == null)
             {
                 return HttpNotFound();
             }
-            return View(employee);
+            return View(manager);
         }
 
-        // POST: Employees/Delete/5
+        // POST: Managers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Employee employee = db.Employees.Find(id);
-            db.Employees.Remove(employee);
+            Manager manager = db.Managers.Find(id);
+            db.Managers.Remove(manager);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

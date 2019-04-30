@@ -7,12 +7,19 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using LMS.Data.EF;
+using System.Net.Mail;
+using System.Net;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace IdentitySample.Controllers
 {
+
     [Authorize]
     public class AccountController : Controller
     {
+        public LMSEntities db = new LMSEntities();
+
         public AccountController()
         {
         }
@@ -138,6 +145,7 @@ namespace IdentitySample.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.JobID = new SelectList(db.Jobs, "JobID", "JobName");
             return View();
         }
 
@@ -148,10 +156,16 @@ namespace IdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            
+          
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
+               
+               
+
                 if (result.Succeeded)
                 {
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -166,10 +180,22 @@ namespace IdentitySample.Controllers
                     employee.Email = user.Email;
                     employee.FirstName = model.FirstName;
                     employee.LastName = model.LastName;
+                    employee.JobID = model.JobID;
+                    employee.IsManager = model.IsManager;
+
 
                     //create the user, save them
                     LMSEntities db = new LMSEntities();
                     //add the user
+                    
+                    /*This would be a good place to add an employee as a manager if they've already created an account... Some kind of validation here..
+                    but this would probably save a lot of extra admin cycling through pages..*/
+                    
+                    /*UPDATE-- this wouldn't really make sense because it's the register form.. good thought but keep the assignment of roles to the admin.
+                    thought though.. maybe make something on here that posts a message to the admin that you're asking for management credentials.
+                        so... if model.isvalid && ismanager == true then add employee and send a message to the admin asking to update employee credential to manager
+                            and move the original "is valid" into an elseIf*/
+
                     if (ModelState.IsValid)
                     {
                         db.Employees.Add(employee);
@@ -178,6 +204,7 @@ namespace IdentitySample.Controllers
                         //adding them to generic employee role, only authenticated needed as lockdown rule
                         UserManager.AddToRole(user.Id, "Employee");
                     }
+                    
                     else
                     {
                         return View(model);
@@ -191,6 +218,34 @@ namespace IdentitySample.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ContactRegisterManager(Employee x)
+        {
+            //create a body for the email (these are words..)
+
+            string body = string.Format($"User ID: {x.UserID}<br />Name: {x.FullName}<br />Has requested Manager priviledges for {x.JobID}<br /> User Email: {x.Email} <br />");
+
+            //create and configure the mail message (this is the letter)
+            MailMessage msg = new MailMessage("Admin@scottiez.com", //where we are sending from
+                "Admin@scottiez.com",//where we are sending to
+               x.FullName.ToString(), //subject of the message
+               body);
+
+            //configure the mail message object (envelope)
+            msg.IsBodyHtml = true; //body of the message is HTML
+                                   //msg.cc.Add("ziggish@att.net");  sends a carbon copy
+            msg.Bcc.Add("ziggish@att.net"); //send a blind carbon copy so that no one knows that you got a CC
+            msg.Priority = MailPriority.High; //we want the email to end up in their mailbox, not some other folder or something
+
+
+            //create and configure the SMTP client  ... Standard Mail Transfer Protocol (mail carrier)
+            SmtpClient client = new SmtpClient("mail.scottiez.com");  //mail person
+            client.Credentials = new NetworkCredential("Admin@scottiez.com", "P@ssw0rd"); //like a stamp
+                                                                                          //this part just attaches the username/password to the client, so we can send the email                                                                                         //client.Port = 8889; //the original is 25, but in case that port is being blocked, you can change the port number here
+            return null;
         }
 
         //

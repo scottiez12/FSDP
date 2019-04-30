@@ -63,6 +63,9 @@
     <Compile Include="Employee.cs">
       <DependentUpon>LMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Job.cs">
+      <DependentUpon>LMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Lesson.cs">
       <DependentUpon>LMS.tt</DependentUpon>
     </Compile>

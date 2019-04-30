@@ -47,6 +47,13 @@
     <Property Name="JobID" Type="int" Nullable="false" />
     <Property Name="ReportsToID" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="Jobs">
+    <Key>
+      <PropertyRef Name="JobID" />
+    </Key>
+    <Property Name="JobID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobName" Type="varchar" MaxLength="150" Nullable="false" />
+  </EntityType>
   <EntityType Name="Lessons">
     <Key>
       <PropertyRef Name="LessonID" />
@@ -120,6 +127,18 @@
       </Principal>
       <Dependent Role="Employees">
         <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employees_Jobs">
+    <End Role="Jobs" Type="Self.Jobs" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Jobs">
+        <PropertyRef Name="JobID" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="JobID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -207,6 +226,7 @@
     <EntitySet Name="CourseCompletions" EntityType="Self.CourseCompletions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LessonViews" EntityType="Self.LessonViews" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Managers" EntityType="Self.Managers" Schema="dbo" store:Type="Tables" />
@@ -221,6 +241,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_Employees_AspNetUsers" Association="Self.FK_Employees_AspNetUsers">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employees_Jobs" Association="Self.FK_Employees_Jobs">
+      <End Role="Jobs" EntitySet="Jobs" />
       <End Role="Employees" EntitySet="Employees" />
     </AssociationSet>
     <AssociationSet Name="FK_Lessons_Courses" Association="Self.FK_Lessons_Courses">

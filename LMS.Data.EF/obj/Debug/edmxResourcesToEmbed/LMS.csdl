@@ -160,6 +160,11 @@
       <End Role="Employee" EntitySet="Employees" />
       <End Role="Manager" EntitySet="Managers" />
     </AssociationSet>
+    <EntitySet Name="Jobs" EntityType="LMSModel.Job" />
+    <AssociationSet Name="FK_Employees_Jobs" Association="LMSModel.FK_Employees_Jobs">
+      <End Role="Job" EntitySet="Jobs" />
+      <End Role="Employee" EntitySet="Employees" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="sp_helpdiagramdefinition_Result">
     <Property Type="Int32" Name="version" Nullable="true" />
@@ -205,6 +210,7 @@
     <NavigationProperty Name="CourseCompletions" Relationship="LMSModel.FK_CourseCompletions_Employees" FromRole="Employee" ToRole="CourseCompletion" />
     <NavigationProperty Name="LessonViews" Relationship="LMSModel.FK_LessonViews_Employees" FromRole="Employee" ToRole="LessonView" />
     <NavigationProperty Name="Manager" Relationship="LMSModel.FK_Managers_Employees" FromRole="Employee" ToRole="Manager" />
+    <NavigationProperty Name="Job" Relationship="LMSModel.FK_Employees_Jobs" FromRole="Employee" ToRole="Job" />
   </EntityType>
   <Association Name="FK_Employees_AspNetUsers">
     <End Type="LMSModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
@@ -261,6 +267,26 @@
       </Principal>
       <Dependent Role="Manager">
         <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Job">
+    <Key>
+      <PropertyRef Name="JobID" />
+    </Key>
+    <Property Name="JobID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Employees" Relationship="LMSModel.FK_Employees_Jobs" FromRole="Job" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK_Employees_Jobs">
+    <End Type="LMSModel.Job" Role="Job" Multiplicity="1" />
+    <End Type="LMSModel.Employee" Role="Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Job">
+        <PropertyRef Name="JobID" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="JobID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

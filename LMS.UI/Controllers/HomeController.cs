@@ -1,4 +1,7 @@
 ﻿using System.Web.Mvc;
+using LMS.Data.EF;
+using System.Net.Mail;
+using System.Net;
 
 namespace IdentitySample.Controllers
 {
@@ -14,17 +17,14 @@ namespace IdentitySample.Controllers
         [Authorize]
         public ActionResult About()
         {
-            ViewBag.Message = "Your app description page.";
-
             return View();
         }
 
         [HttpGet]
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
+
     }
 }

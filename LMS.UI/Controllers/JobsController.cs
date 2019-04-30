@@ -10,107 +10,110 @@ using LMS.Data.EF;
 
 namespace LMS.UI.Controllers
 {
-    public class EmployeesController : Controller
+    public class JobsController : Controller
     {
         private LMSEntities db = new LMSEntities();
 
-        // GET: Employees
+        // GET: Jobs
         public ActionResult Index()
         {
-            return View(db.Employees.ToList());
+
+            return View(db.Jobs.ToList());
         }
 
-        // GET: Employees/Details/5
-        public ActionResult Details(string id)
+
+
+        // GET: Jobs/Details/5
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
-            if (employee == null)
+            Job job = db.Jobs.Find(id);
+            if (job == null)
             {
                 return HttpNotFound();
             }
-            return View(employee);
+            return View(job);
         }
 
-        // GET: Employees/Create
+        // GET: Jobs/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Employees/Create
+        // POST: Jobs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserID,FirstName,LastName,IsManager,Email,JobID,ReportsToID")] Employee employee)
+        public ActionResult Create([Bind(Include = "JobID,JobName")] Job job)
         {
             if (ModelState.IsValid)
             {
-                db.Employees.Add(employee);
+                db.Jobs.Add(job);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(employee);
+            return View(job);
         }
 
-        // GET: Employees/Edit/5
-        public ActionResult Edit(string id)
+        // GET: Jobs/Edit/5
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
-            if (employee == null)
+            Job job = db.Jobs.Find(id);
+            if (job == null)
             {
                 return HttpNotFound();
             }
-            return View(employee);
+            return View(job);
         }
 
-        // POST: Employees/Edit/5
+        // POST: Jobs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,FirstName,LastName,IsManager,Email,JobID,ReportsToID")] Employee employee)
+        public ActionResult Edit([Bind(Include = "JobID,JobName")] Job job)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(employee).State = EntityState.Modified;
+                db.Entry(job).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(employee);
+            return View(job);
         }
 
-        // GET: Employees/Delete/5
-        public ActionResult Delete(string id)
+        // GET: Jobs/Delete/5
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
-            if (employee == null)
+            Job job = db.Jobs.Find(id);
+            if (job == null)
             {
                 return HttpNotFound();
             }
-            return View(employee);
+            return View(job);
         }
 
-        // POST: Employees/Delete/5
+        // POST: Jobs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            Employee employee = db.Employees.Find(id);
-            db.Employees.Remove(employee);
+            Job job = db.Jobs.Find(id);
+            db.Jobs.Remove(job);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
