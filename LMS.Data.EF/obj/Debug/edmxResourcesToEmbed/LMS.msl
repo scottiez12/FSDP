@@ -100,8 +100,20 @@
     <EntitySetMapping Name="Employees">
       <EntityTypeMapping TypeName="LMSModel.Employee">
         <MappingFragment StoreEntitySet="Employees">
+          <ScalarProperty Name="ReportsToID" ColumnName="ReportsToID" />
+          <ScalarProperty Name="JobID" ColumnName="JobID" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="IsManager" ColumnName="IsManager" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Managers">
+      <EntityTypeMapping TypeName="LMSModel.Manager">
+        <MappingFragment StoreEntitySet="Managers">
+          <ScalarProperty Name="JobID" ColumnName="JobID" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="UserID" ColumnName="UserID" />

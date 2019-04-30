@@ -9,6 +9,7 @@
     <Property Name="CourseID" Type="Int32" Nullable="false" />
     <Property Name="DateCompleted" Type="DateTime" Nullable="false" Precision="0" />
     <NavigationProperty Name="Cours" Relationship="Self.FK_CourseCompletions_Courses" FromRole="CourseCompletions" ToRole="Courses" />
+    <NavigationProperty Name="Employee" Relationship="LMSModel.FK_CourseCompletions_Employees" FromRole="CourseCompletion" ToRole="Employee" />
   </EntityType>
   <EntityType Name="Course">
     <Key>
@@ -44,6 +45,7 @@
     <Property Name="LessonID" Type="Int32" Nullable="false" />
     <Property Name="DateViewed" Type="DateTime" Nullable="false" Precision="0" />
     <NavigationProperty Name="Lesson" Relationship="Self.FK_LessonViews_Lessons" FromRole="LessonViews" ToRole="Lessons" />
+    <NavigationProperty Name="Employee" Relationship="LMSModel.FK_LessonViews_Employees" FromRole="LessonView" ToRole="Employee" />
   </EntityType>
   <EntityType Name="sysdiagram">
     <Key>
@@ -145,6 +147,19 @@
       <End Role="AspNetUser" EntitySet="AspNetUsers" />
       <End Role="Employee" EntitySet="Employees" />
     </AssociationSet>
+    <EntitySet Name="Managers" EntityType="LMSModel.Manager" />
+    <AssociationSet Name="FK_CourseCompletions_Employees" Association="LMSModel.FK_CourseCompletions_Employees">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="CourseCompletion" EntitySet="CourseCompletions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LessonViews_Employees" Association="LMSModel.FK_LessonViews_Employees">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="LessonView" EntitySet="LessonViews" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Managers_Employees" Association="LMSModel.FK_Managers_Employees">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Manager" EntitySet="Managers" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="sp_helpdiagramdefinition_Result">
     <Property Type="Int32" Name="version" Nullable="true" />
@@ -185,6 +200,11 @@
     <Property Name="IsManager" Type="Boolean" Nullable="false" />
     <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="AspNetUser" Relationship="LMSModel.FK_Employees_AspNetUsers" FromRole="Employee" ToRole="AspNetUser" />
+    <Property Name="JobID" Type="Int32" Nullable="false" />
+    <Property Name="ReportsToID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CourseCompletions" Relationship="LMSModel.FK_CourseCompletions_Employees" FromRole="Employee" ToRole="CourseCompletion" />
+    <NavigationProperty Name="LessonViews" Relationship="LMSModel.FK_LessonViews_Employees" FromRole="Employee" ToRole="LessonView" />
+    <NavigationProperty Name="Manager" Relationship="LMSModel.FK_Managers_Employees" FromRole="Employee" ToRole="Manager" />
   </EntityType>
   <Association Name="FK_Employees_AspNetUsers">
     <End Type="LMSModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
@@ -194,6 +214,52 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Employee">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Manager">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="JobID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="LMSModel.FK_Managers_Employees" FromRole="Manager" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK_CourseCompletions_Employees">
+    <End Type="LMSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="LMSModel.CourseCompletion" Role="CourseCompletion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CourseCompletion">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LessonViews_Employees">
+    <End Type="LMSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="LMSModel.LessonView" Role="LessonView" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="LessonView">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Managers_Employees">
+    <End Type="LMSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="LMSModel.Manager" Role="Manager" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Manager">
         <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>

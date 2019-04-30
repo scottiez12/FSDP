@@ -14,12 +14,26 @@ namespace LMS.Data.EF
     
     public partial class Employee
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Employee()
+        {
+            this.CourseCompletions = new HashSet<CourseCompletion>();
+            this.LessonViews = new HashSet<LessonView>();
+        }
+    
         public string UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool IsManager { get; set; }
         public string Email { get; set; }
+        public int JobID { get; set; }
+        public int ReportsToID { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseCompletion> CourseCompletions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LessonView> LessonViews { get; set; }
+        public virtual Manager Manager { get; set; }
     }
 }

@@ -12,14 +12,13 @@ namespace LMS.Data.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class CourseCompletion
+    public partial class Manager
     {
-        public int CourseCompletionID { get; set; }
         public string UserID { get; set; }
-        public int CourseID { get; set; }
-        public System.DateTime DateCompleted { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int JobID { get; set; }
     
-        public virtual Course Cours { get; set; }
         public virtual Employee Employee { get; set; }
     }
 }
