@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LMS.Data.EF;
+using System.IO;
+using System.Drawing;
 
 namespace LMS.UI.Controllers
 {
@@ -48,10 +50,60 @@ namespace LMS.UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "LessonID,LessonTitle,CourseID,Introduction,VideoUrl,PdfFileName,IsActive")] Lesson lesson)
+        public ActionResult Create([Bind(Include = "LessonID,LessonTitle,CourseID,Introduction,VideoUrl,PdfFileName,IsActive")] Lesson lesson
+            , HttpPostedFileBase pdfFileName)
         {
+
             if (ModelState.IsValid)
             {
+                #region PDF Upload
+                string pdfName = "";//filename
+                if (lesson.PdfFileName != null)
+                {
+                    pdfName = pdfFileName.FileName;
+                    string ext = pdfName.Substring(pdfName.LastIndexOf("."));
+                    string[] allowedExts = { ".pdf" };
+                    //only pdf's
+                    if (allowedExts.Contains(ext.ToLower()))
+                    {
+                        pdfName = Guid.NewGuid() + ext;
+                        //save with timestamp
+                        // if the simple way works, add this later pdfName = DateTime.Now.ToString("yyyyMMdd" + "_" + pdfName + pdfExt);
+                        //save to server
+                        pdfFileName.SaveAs(Server.MapPath("~/Content/documents/" + pdfName));
+                    }
+                }
+                //file value and pdfFileName value are the same
+                lesson.PdfFileName = pdfName;
+                #endregion
+
+                #region YouTubeID 
+                if (lesson.VideoUrl != null)
+                {
+                  
+                    // function youtube_parser(url){
+                    //                        var regExp = /^.* ((youtu.be\/)| (v\/)| (\/ u\/\w\/)| (embed\/)| (watch\?))\?? v ?=? ([^#\&\?]*).*/;
+                    //    var match = url.match(regExp);
+                    //                        return (match && match[7].length == 11) ? match[7] : false;
+                 
+                   
+                    var v = lesson.VideoUrl.IndexOf("v=");
+                    var amp = lesson.VideoUrl.IndexOf("&", v);
+                    string vid;
+                    // if the video id is the last value in the url
+                    if (amp == -1)
+                    {
+                        vid = lesson.VideoUrl.Substring(v + 2);
+                        // if there are other parameters after the video id in the url
+                    }
+                    else
+                    {
+                        vid = lesson.VideoUrl.Substring(v + 2, amp - (v + 2));
+                    }
+                    lesson.VideoUrl = vid;
+                }
+                #endregion
+
                 db.Lessons.Add(lesson);
                 db.SaveChanges();
                 return RedirectToAction("Index");
