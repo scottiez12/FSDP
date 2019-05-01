@@ -58,35 +58,46 @@ namespace LMS.UI.Controllers
             {
                 #region PDF Upload
                 string pdfName = "";//filename
-                if (lesson.PdfFileName != null)
+                if (pdfFileName != null && pdfFileName.ContentLength > 0 )
                 {
+                    //string _FileName = Path.GetFileName(pdfFileName.FileName);
+                    //string _path = Path.Combine(Server.MapPath("~/Content/documents/"), _FileName);
+                    //PdfFileName.SaveAs(_path);
+
                     pdfName = pdfFileName.FileName;
-                    string ext = pdfName.Substring(pdfName.LastIndexOf("."));
+                    //string ext = pdfName.Substring(pdfName.LastIndexOf("."));
+                    string pdfExt = Path.GetExtension(pdfFileName.FileName).ToLower();
                     string[] allowedExts = { ".pdf" };
                     //only pdf's
-                    if (allowedExts.Contains(ext.ToLower()))
+                    if (allowedExts.Contains(pdfExt))
                     {
-                        pdfName = Guid.NewGuid() + ext;
+                        pdfName = DateTime.Now.ToString("yyyyMMdd") + Path.GetFileName(pdfFileName.FileName) ;
+                       //pdfName = DateTime.Now.Year + pdfExt;
                         //save with timestamp
                         // if the simple way works, add this later pdfName = DateTime.Now.ToString("yyyyMMdd" + "_" + pdfName + pdfExt);
                         //save to server
                         pdfFileName.SaveAs(Server.MapPath("~/Content/documents/" + pdfName));
+                        lesson.PdfFileName = pdfName;
                     }
                 }
+                else
+                {
+                    lesson.PdfFileName = null;
+                }
                 //file value and pdfFileName value are the same
-                lesson.PdfFileName = pdfName;
+
                 #endregion
 
                 #region YouTubeID 
                 if (lesson.VideoUrl != null)
                 {
-                  
+
                     // function youtube_parser(url){
                     //                        var regExp = /^.* ((youtu.be\/)| (v\/)| (\/ u\/\w\/)| (embed\/)| (watch\?))\?? v ?=? ([^#\&\?]*).*/;
                     //    var match = url.match(regExp);
                     //                        return (match && match[7].length == 11) ? match[7] : false;
-                 
-                   
+
+
                     var v = lesson.VideoUrl.IndexOf("v=");
                     var amp = lesson.VideoUrl.IndexOf("&", v);
                     string vid;
