@@ -250,7 +250,7 @@ namespace IdentitySample.Controllers
                body);
             
             //configure the mail message object (envelope)
-            //msg.IsBodyHtml = true; //body of the message is HTML
+            msg.IsBodyHtml = true; //body of the message is HTML
                                    //msg.cc.Add("ziggish@att.net");  sends a carbon copy
                                    //msg.Bcc.Add("ziggish@att.net"); //send a blind carbon copy so that no one knows that you got a CC
             msg.Priority = MailPriority.High; //we want the email to end up in their mailbox, not some other folder or something

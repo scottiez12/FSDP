@@ -14,7 +14,29 @@ namespace LMS.UI.Controllers
 {
     public class LessonsController : Controller
     {
-        private LMSEntities db = new LMSEntities();
+        public LMSEntities db = new LMSEntities();
+
+        //youtube stuff
+
+            public void GetUrlByID(int id)
+        {
+            var GetUrl = db.Lessons.Where(x => x.LessonID == id)
+                .Select(x => x.VideoUrl);               
+            //var GetUrl = db.Lessons.Where(x => x.LessonID == 10)
+            //    .Select(x => x.VideoUrl);
+            //url = GetUrl.ToString();
+        }
+
+
+        public ActionResult YouTubeTest2()
+        {
+            var LessIdSelect = db.Lessons
+                .Where(x => x.LessonID > 1);
+            ViewBag.LessIdSelect = LessIdSelect.ToList();
+            ViewBag.LessIdCount = LessIdSelect.Count();
+
+            return View();
+        }
 
         // GET: Lessons
         public ActionResult Index()
@@ -42,6 +64,12 @@ namespace LMS.UI.Controllers
         public ActionResult Create()
         {
             ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName");
+            return View();
+        }
+
+        public ActionResult YouTubeTest()
+        {
+            ViewBag.LessonID = new SelectList(db.Lessons, "LessonID", "LessonTitle");
             return View();
         }
 
@@ -88,32 +116,33 @@ namespace LMS.UI.Controllers
 
                 #endregion
 
-                #region YouTubeID 
-                if (lesson.VideoUrl != null)
-                {
+                //#region YouTubeID 
+                //if (lesson.VideoUrl != null)
+                //{
 
-                    // function youtube_parser(url){
-                    //                        var regExp = /^.* ((youtu.be\/)| (v\/)| (\/ u\/\w\/)| (embed\/)| (watch\?))\?? v ?=? ([^#\&\?]*).*/;
-                    //    var match = url.match(regExp);
-                    //                        return (match && match[7].length == 11) ? match[7] : false;
+                //    // function youtube_parser(url){
+                //    //                        var regExp = /^.* ((youtu.be\/)| (v\/)| (\/ u\/\w\/)| (embed\/)| (watch\?))\?? v ?=? ([^#\&\?]*).*/;
+                //    //    var match = url.match(regExp);
+                //    //                        return (match && match[7].length == 11) ? match[7] : false;
 
 
-                    var v = lesson.VideoUrl.IndexOf("v=");
-                    var amp = lesson.VideoUrl.IndexOf("&", v);
-                    string vid;
-                    // if the video id is the last value in the url
-                    if (amp == -1)
-                    {
-                        vid = lesson.VideoUrl.Substring(v + 2);
-                        // if there are other parameters after the video id in the url
-                    }
-                    else
-                    {
-                        vid = lesson.VideoUrl.Substring(v + 2, amp - (v + 2));
-                    }
-                    lesson.VideoUrl = vid;
-                }
-                #endregion
+                //    var v = lesson.VideoUrl.IndexOf("v=");
+                //    var amp = lesson.VideoUrl.IndexOf("&", v);
+                //    string vid;
+                //    // if the video id is the last value in the url
+                //    if (amp == -1)
+                //    {
+                //        vid = lesson.VideoUrl.Substring(v + 2);
+                //        // if there are other parameters after the video id in the url
+                //    }
+                //    else
+                //    {
+                //        vid = lesson.VideoUrl.Substring(v + 2, amp - (v + 2));
+                //    }
+                //    lesson.VideoUrl = vid;
+                //    ViewBag.VideoID = vid;
+                //}
+                //#endregion
 
                 db.Lessons.Add(lesson);
                 db.SaveChanges();

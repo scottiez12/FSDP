@@ -296,8 +296,10 @@
     <Content Include="Views\Jobs\Details.cshtml" />
     <Content Include="Views\Jobs\Edit.cshtml" />
     <Content Include="Views\Jobs\Index.cshtml" />
-    <Content Include="Views\Lessons\YouTubeTestHarness.cshtml" />
     <Content Include="Views\Shared\Test.cshtml" />
+    <Content Include="Views\Lessons\YouTubeTest.cshtml" />
+    <Content Include="Views\Lessons\YouTubeTest2.cshtml" />
+    <Content Include="Views\Lessons\GetUrlByID.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
