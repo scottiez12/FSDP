@@ -18,7 +18,7 @@ namespace LMS.Data.EF
 
         [Required(ErrorMessage = "Required***")]
         [StringLength(200, ErrorMessage = "Course Name must be less than 200 characters***")]
-        public string CourseName { get; set; }
+       public string CourseName { get; set; }
 
         [StringLength(500, ErrorMessage = "Description must be less than 500 characters***")]
         [DisplayFormat(NullDisplayText = "--N/A--")]

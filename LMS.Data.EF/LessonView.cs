@@ -19,7 +19,7 @@ namespace LMS.Data.EF
         public int LessonID { get; set; }
         public System.DateTime DateViewed { get; set; }
     
-        public virtual Lesson Lesson { get; set; }
         public virtual Employee Employee { get; set; }
+        public virtual Lesson Lesson { get; set; }
     }
 }

@@ -179,7 +179,6 @@
     <Compile Include="Controllers\LessonsController.cs" />
     <Compile Include="Controllers\LessonViewsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\ManagersController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Global.asax.cs">
@@ -204,6 +203,11 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\documents\20190501jQueryLabs.pdf" />
+    <Content Include="Content\documents\20190501LMS - Schema - 1.03.00.pdf" />
+    <Content Include="Content\documents\20190502jQueryLabs.pdf" />
+    <Content Include="Content\documents\jQueryLabs.pdf.pdf" />
+    <Content Include="Content\documents\System.Web.HttpPostedFileWrapper2019.pdf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -261,11 +265,6 @@
     <Content Include="Views\RolesAdmin\Delete.cshtml" />
     <Content Include="Views\RolesAdmin\Create.cshtml" />
     <Content Include="Views\Account\DisplayEmail.cshtml" />
-    <Content Include="Views\Courses\Create.cshtml" />
-    <Content Include="Views\Courses\Delete.cshtml" />
-    <Content Include="Views\Courses\Details.cshtml" />
-    <Content Include="Views\Courses\Edit.cshtml" />
-    <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\CourseCompletions\Create.cshtml" />
     <Content Include="Views\CourseCompletions\Delete.cshtml" />
     <Content Include="Views\CourseCompletions\Details.cshtml" />
@@ -286,11 +285,6 @@
     <Content Include="Views\Employees\Details.cshtml" />
     <Content Include="Views\Employees\Edit.cshtml" />
     <Content Include="Views\Employees\Index.cshtml" />
-    <Content Include="Views\Managers\Create.cshtml" />
-    <Content Include="Views\Managers\Delete.cshtml" />
-    <Content Include="Views\Managers\Details.cshtml" />
-    <Content Include="Views\Managers\Edit.cshtml" />
-    <Content Include="Views\Managers\Index.cshtml" />
     <Content Include="Views\Jobs\Create.cshtml" />
     <Content Include="Views\Jobs\Delete.cshtml" />
     <Content Include="Views\Jobs\Details.cshtml" />
@@ -300,10 +294,14 @@
     <Content Include="Views\Lessons\YouTubeTest.cshtml" />
     <Content Include="Views\Lessons\YouTubeTest2.cshtml" />
     <Content Include="Views\Lessons\GetUrlByID.cshtml" />
+    <Content Include="Views\Courses\Create.cshtml" />
+    <Content Include="Views\Courses\Delete.cshtml" />
+    <Content Include="Views\Courses\Details.cshtml" />
+    <Content Include="Views\Courses\Edit.cshtml" />
+    <Content Include="Views\Courses\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\documents\" />
     <Folder Include="Content\images\" />
     <Folder Include="Content\videos\" />
   </ItemGroup>

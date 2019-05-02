@@ -1,5 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="LMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Employees_AspNetUsers" FromRole="AspNetUsers" ToRole="Employees" />
+    <NavigationProperty Name="Managers" Relationship="Self.FK_Managers_AspNetUsers" FromRole="AspNetUsers" ToRole="Managers" />
+  </EntityType>
   <EntityType Name="CourseCompletion">
     <Key>
       <PropertyRef Name="CourseCompletionID" />
@@ -9,7 +28,7 @@
     <Property Name="CourseID" Type="Int32" Nullable="false" />
     <Property Name="DateCompleted" Type="DateTime" Nullable="false" Precision="0" />
     <NavigationProperty Name="Cours" Relationship="Self.FK_CourseCompletions_Courses" FromRole="CourseCompletions" ToRole="Courses" />
-    <NavigationProperty Name="Employee" Relationship="LMSModel.FK_CourseCompletions_Employees" FromRole="CourseCompletion" ToRole="Employee" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_CourseCompletions_Employees" FromRole="CourseCompletions" ToRole="Employees" />
   </EntityType>
   <EntityType Name="Course">
     <Key>
@@ -21,6 +40,31 @@
     <Property Name="IsActive" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="CourseCompletions" Relationship="Self.FK_CourseCompletions_Courses" FromRole="Courses" ToRole="CourseCompletions" />
     <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_Courses" FromRole="Courses" ToRole="Lessons" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IsManager" Type="Boolean" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="JobID" Type="Int32" Nullable="false" />
+    <Property Name="ReportsToID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Employees_AspNetUsers" FromRole="Employees" ToRole="AspNetUsers" />
+    <NavigationProperty Name="CourseCompletions" Relationship="Self.FK_CourseCompletions_Employees" FromRole="Employees" ToRole="CourseCompletions" />
+    <NavigationProperty Name="Job" Relationship="Self.FK_Employees_Jobs" FromRole="Employees" ToRole="Jobs" />
+    <NavigationProperty Name="Manager" Relationship="Self.FK_Employees_Managers" FromRole="Employees" ToRole="Managers" />
+    <NavigationProperty Name="LessonViews" Relationship="Self.FK_LessonViews_Employees" FromRole="Employees" ToRole="LessonViews" />
+  </EntityType>
+  <EntityType Name="Job">
+    <Key>
+      <PropertyRef Name="JobID" />
+    </Key>
+    <Property Name="JobID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_Jobs" FromRole="Jobs" ToRole="Employees" />
   </EntityType>
   <EntityType Name="Lesson">
     <Key>
@@ -44,19 +88,46 @@
     <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="LessonID" Type="Int32" Nullable="false" />
     <Property Name="DateViewed" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_LessonViews_Employees" FromRole="LessonViews" ToRole="Employees" />
     <NavigationProperty Name="Lesson" Relationship="Self.FK_LessonViews_Lessons" FromRole="LessonViews" ToRole="Lessons" />
-    <NavigationProperty Name="Employee" Relationship="LMSModel.FK_LessonViews_Employees" FromRole="LessonView" ToRole="Employee" />
   </EntityType>
-  <EntityType Name="sysdiagram">
+  <EntityType Name="Manager">
     <Key>
-      <PropertyRef Name="diagram_id" />
+      <PropertyRef Name="ManagerID" />
     </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="JobID" Type="Int32" Nullable="false" />
+    <Property Name="ManagerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Managers_AspNetUsers" FromRole="Managers" ToRole="AspNetUsers" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_Managers" FromRole="Managers" ToRole="Employees" />
   </EntityType>
+  <Association Name="FK_Employees_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Managers_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+    <End Role="Managers" Type="Self.Manager" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Managers">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_CourseCompletions_Courses">
     <End Role="Courses" Type="LMSModel.Course" Multiplicity="1" />
     <End Role="CourseCompletions" Type="Self.CourseCompletion" Multiplicity="*" />
@@ -69,6 +140,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_CourseCompletions_Employees">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="CourseCompletions" Type="Self.CourseCompletion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CourseCompletions">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Lessons_Courses">
     <End Role="Courses" Type="LMSModel.Course" Multiplicity="1" />
     <End Role="Lessons" Type="Self.Lesson" Multiplicity="*" />
@@ -78,6 +161,42 @@
       </Principal>
       <Dependent Role="Lessons">
         <PropertyRef Name="CourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employees_Jobs">
+    <End Role="Jobs" Type="Self.Job" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Jobs">
+        <PropertyRef Name="JobID" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="JobID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employees_Managers">
+    <End Role="Managers" Type="Self.Manager" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Managers">
+        <PropertyRef Name="ManagerID" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="ReportsToID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LessonViews_Employees">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="LessonViews" Type="Self.LessonView" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="LessonViews">
+        <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -94,200 +213,49 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="LMSEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
     <EntitySet Name="CourseCompletions" EntityType="Self.CourseCompletion" />
     <EntitySet Name="Courses" EntityType="LMSModel.Course" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Jobs" EntityType="Self.Job" />
     <EntitySet Name="Lessons" EntityType="Self.Lesson" />
     <EntitySet Name="LessonViews" EntityType="Self.LessonView" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Managers" EntityType="Self.Manager" />
+    <AssociationSet Name="FK_Employees_AspNetUsers" Association="Self.FK_Employees_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Managers_AspNetUsers" Association="Self.FK_Managers_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Managers" EntitySet="Managers" />
+    </AssociationSet>
     <AssociationSet Name="FK_CourseCompletions_Courses" Association="Self.FK_CourseCompletions_Courses">
       <End Role="Courses" EntitySet="Courses" />
+      <End Role="CourseCompletions" EntitySet="CourseCompletions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CourseCompletions_Employees" Association="Self.FK_CourseCompletions_Employees">
+      <End Role="Employees" EntitySet="Employees" />
       <End Role="CourseCompletions" EntitySet="CourseCompletions" />
     </AssociationSet>
     <AssociationSet Name="FK_Lessons_Courses" Association="Self.FK_Lessons_Courses">
       <End Role="Courses" EntitySet="Courses" />
       <End Role="Lessons" EntitySet="Lessons" />
     </AssociationSet>
+    <AssociationSet Name="FK_Employees_Jobs" Association="Self.FK_Employees_Jobs">
+      <End Role="Jobs" EntitySet="Jobs" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employees_Managers" Association="Self.FK_Employees_Managers">
+      <End Role="Managers" EntitySet="Managers" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LessonViews_Employees" Association="Self.FK_LessonViews_Employees">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="LessonViews" EntitySet="LessonViews" />
+    </AssociationSet>
     <AssociationSet Name="FK_LessonViews_Lessons" Association="Self.FK_LessonViews_Lessons">
       <End Role="Lessons" EntitySet="Lessons" />
       <End Role="LessonViews" EntitySet="LessonViews" />
     </AssociationSet>
-    <FunctionImport Name="sp_alterdiagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-      <Parameter Name="version" Mode="In" Type="Int32" />
-      <Parameter Name="definition" Mode="In" Type="Binary" />
-    </FunctionImport>
-    <FunctionImport Name="sp_creatediagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-      <Parameter Name="version" Mode="In" Type="Int32" />
-      <Parameter Name="definition" Mode="In" Type="Binary" />
-    </FunctionImport>
-    <FunctionImport Name="sp_dropdiagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(LMSModel.sp_helpdiagramdefinition_Result)">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(LMSModel.sp_helpdiagrams_Result)">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_renamediagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-      <Parameter Name="new_diagramname" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="sp_upgraddiagrams" />
-    <EntitySet Name="AspNetUsers" EntityType="LMSModel.AspNetUser" />
-    <EntitySet Name="Employees" EntityType="LMSModel.Employee" />
-    <AssociationSet Name="FK_Employees_AspNetUsers" Association="LMSModel.FK_Employees_AspNetUsers">
-      <End Role="AspNetUser" EntitySet="AspNetUsers" />
-      <End Role="Employee" EntitySet="Employees" />
-    </AssociationSet>
-    <EntitySet Name="Managers" EntityType="LMSModel.Manager" />
-    <AssociationSet Name="FK_CourseCompletions_Employees" Association="LMSModel.FK_CourseCompletions_Employees">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="CourseCompletion" EntitySet="CourseCompletions" />
-    </AssociationSet>
-    <AssociationSet Name="FK_LessonViews_Employees" Association="LMSModel.FK_LessonViews_Employees">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="LessonView" EntitySet="LessonViews" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Managers_Employees" Association="LMSModel.FK_Managers_Employees">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="Manager" EntitySet="Managers" />
-    </AssociationSet>
-    <EntitySet Name="Jobs" EntityType="LMSModel.Job" />
-    <AssociationSet Name="FK_Employees_Jobs" Association="LMSModel.FK_Employees_Jobs">
-      <End Role="Job" EntitySet="Jobs" />
-      <End Role="Employee" EntitySet="Employees" />
-    </AssociationSet>
   </EntityContainer>
-  <ComplexType Name="sp_helpdiagramdefinition_Result">
-    <Property Type="Int32" Name="version" Nullable="true" />
-    <Property Type="Binary" Name="definition" Nullable="true" />
-  </ComplexType>
-  <ComplexType Name="sp_helpdiagrams_Result">
-    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-    <Property Type="Int32" Name="ID" Nullable="false" />
-    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-    <Property Type="Int32" Name="OwnerID" Nullable="false" />
-  </ComplexType>
-  <EntityType Name="AspNetUser">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
-    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
-    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
-    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
-    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-    <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Employee" Relationship="LMSModel.FK_Employees_AspNetUsers" FromRole="AspNetUser" ToRole="Employee" />
-  </EntityType>
-  <EntityType Name="Employee">
-    <Key>
-      <PropertyRef Name="UserID" />
-    </Key>
-    <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-    <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="IsManager" Type="Boolean" Nullable="false" />
-    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="AspNetUser" Relationship="LMSModel.FK_Employees_AspNetUsers" FromRole="Employee" ToRole="AspNetUser" />
-    <Property Name="JobID" Type="Int32" Nullable="false" />
-    <Property Name="ReportsToID" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="CourseCompletions" Relationship="LMSModel.FK_CourseCompletions_Employees" FromRole="Employee" ToRole="CourseCompletion" />
-    <NavigationProperty Name="LessonViews" Relationship="LMSModel.FK_LessonViews_Employees" FromRole="Employee" ToRole="LessonView" />
-    <NavigationProperty Name="Manager" Relationship="LMSModel.FK_Managers_Employees" FromRole="Employee" ToRole="Manager" />
-    <NavigationProperty Name="Job" Relationship="LMSModel.FK_Employees_Jobs" FromRole="Employee" ToRole="Job" />
-  </EntityType>
-  <Association Name="FK_Employees_AspNetUsers">
-    <End Type="LMSModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-    <End Type="LMSModel.Employee" Role="Employee" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="AspNetUser">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Employee">
-        <PropertyRef Name="UserID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="Manager">
-    <Key>
-      <PropertyRef Name="UserID" />
-    </Key>
-    <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-    <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="JobID" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Employee" Relationship="LMSModel.FK_Managers_Employees" FromRole="Manager" ToRole="Employee" />
-  </EntityType>
-  <Association Name="FK_CourseCompletions_Employees">
-    <End Type="LMSModel.Employee" Role="Employee" Multiplicity="1" />
-    <End Type="LMSModel.CourseCompletion" Role="CourseCompletion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="UserID" />
-      </Principal>
-      <Dependent Role="CourseCompletion">
-        <PropertyRef Name="UserID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_LessonViews_Employees">
-    <End Type="LMSModel.Employee" Role="Employee" Multiplicity="1" />
-    <End Type="LMSModel.LessonView" Role="LessonView" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="UserID" />
-      </Principal>
-      <Dependent Role="LessonView">
-        <PropertyRef Name="UserID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Managers_Employees">
-    <End Type="LMSModel.Employee" Role="Employee" Multiplicity="1" />
-    <End Type="LMSModel.Manager" Role="Manager" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="UserID" />
-      </Principal>
-      <Dependent Role="Manager">
-        <PropertyRef Name="UserID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="Job">
-    <Key>
-      <PropertyRef Name="JobID" />
-    </Key>
-    <Property Name="JobID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="JobName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Employees" Relationship="LMSModel.FK_Employees_Jobs" FromRole="Job" ToRole="Employee" />
-  </EntityType>
-  <Association Name="FK_Employees_Jobs">
-    <End Type="LMSModel.Job" Role="Job" Multiplicity="1" />
-    <End Type="LMSModel.Employee" Role="Employee" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Job">
-        <PropertyRef Name="JobID" />
-      </Principal>
-      <Dependent Role="Employee">
-        <PropertyRef Name="JobID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

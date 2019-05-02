@@ -32,9 +32,9 @@ namespace LMS.Data.EF
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseCompletion> CourseCompletions { get; set; }
+        public virtual Job Job { get; set; }
+        public virtual Manager Manager { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LessonView> LessonViews { get; set; }
-        public virtual Manager Manager { get; set; }
-        public virtual Job Job { get; set; }
     }
 }

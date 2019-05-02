@@ -182,6 +182,15 @@ namespace IdentitySample.Controllers
                     employee.LastName = model.LastName;
                     employee.JobID = model.JobID;
                     employee.IsManager = model.IsManager;
+                    if (employee.IsManager == true)
+                    {
+                        Manager manager = new Manager();
+                        manager.UserID = user.Id;
+                        manager.Email = user.Email;
+                        manager.FirstName = model.FirstName;
+                        manager.LastName = model.LastName;
+                        manager.JobID = model.JobID;
+                    }
 
 
                     //create the user, save them
