@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdentitySample.Models
 {
+    
+
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
@@ -64,7 +66,6 @@ namespace IdentitySample.Models
 
     public class RegisterViewModel 
     {
-        
 
         [Required(ErrorMessage = "Required***")]
         [EmailAddress(ErrorMessage = "Please enter a valid Email address***")]
@@ -104,6 +105,7 @@ namespace IdentitySample.Models
         [Required(ErrorMessage = "Required***")]
         public int ReportsToID { get; set; }
        
+        
 
     }
 

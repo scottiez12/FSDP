@@ -99,7 +99,7 @@ namespace LMS.Data.EF
     public class ManagerMetadata
     {
 
-        [Key]
+        
         public string UserID { get; set; }
 
         [Required(ErrorMessage = "Required***")]
@@ -112,6 +112,15 @@ namespace LMS.Data.EF
 
         [Required(ErrorMessage = "Required***")]
         public int JobID { get; set; }
+
+        [Key]
+        public int ManagerID { get; set; }
+
+        [Required(ErrorMessage = "Required***")]
+        [EmailAddress(ErrorMessage = "Please enter a valid Email address***")]
+        [StringLength(50, ErrorMessage = "Email must be less than 50 characters***")]
+        public string Email { get; set; }
+
 
     }
     #endregion

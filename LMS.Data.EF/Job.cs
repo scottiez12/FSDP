@@ -22,7 +22,7 @@ namespace LMS.Data.EF
     
         public int JobID { get; set; }
         public string JobName { get; set; }
-    
+       
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Employee> Employees { get; set; }
     }

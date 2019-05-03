@@ -7,12 +7,44 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LMS.Data.EF;
+using Microsoft.AspNet.Identity;
+
 
 namespace LMS.UI.Controllers
 {
     public class LessonViewsController : Controller
     {
         private LMSEntities db = new LMSEntities();
+
+        [HttpGet]
+        public ActionResult JsonCreateLv()
+        {
+            ViewBag.JsonCreate = new SelectList(db.Lessons, "LessonID", "LessonTitle");
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult JsonCreateLv([Bind(Include = "LessonViewID,UserID,LessonID,DateViewed")]LessonView lvw)
+        {
+
+            //create the item in the table
+            LessonView lessonView = new LessonView();
+            //props
+            lessonView.DateViewed = DateTime.Now;
+            lessonView.UserID = User.Identity.ToString() ;
+            lessonView.LessonID = ViewBag.curLess;
+
+
+            db.LessonViews.Add(lvw);
+            db.SaveChanges();
+            string message = $"{User.Identity.Name}, your Course Completion has been updated.";
+            return Json(new { Message = message, JsonRequestBehavior.AllowGet });
+        }
+
+        
+
 
         // GET: LessonViews
         public ActionResult Index()
@@ -50,8 +82,12 @@ namespace LMS.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "LessonViewID,UserID,LessonID,DateViewed")] LessonView lessonView)
         {
+            var curUser = User.Identity.GetUserId();
+            var userID = db.Employees.Where(x => x.UserID == curUser);
+            lessonView.UserID = curUser;
             if (ModelState.IsValid)
             {
+                
                 db.LessonViews.Add(lessonView);
                 db.SaveChanges();
                 return RedirectToAction("Index");

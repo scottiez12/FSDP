@@ -1,7 +1,12 @@
 ﻿@model LMS.Data.EF.Lesson
-
+@using LMS.UI.Controllers
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = Model.LessonTitle;
+
+    var currentLesson = Model.LessonID;
+    ViewBag.curLess= currentLesson;
+    
 
 
     var v = Model.VideoUrl.IndexOf("v=");
@@ -118,19 +123,57 @@
         }
         // autoplay video
         function onPlayerReady(event) {
-            event.target.playVideo();
+            event.target.playVideo();//null if we want to force autoplay off
         }
+        //function onPlayerStateChange(event) {
+        //    if (event.data === 1) {
+        //        //autofill date viewed
+        //        alert('DateViewedUpdateTest');
+        //    }
+        //}
 
         // when video ends
+        //data needs to be sent to the create thing in key/value pairs
+
         function onPlayerStateChange(event) {
             if (event.data === 0) {
-                //do something on end;
-                alert('done');
+                $(document).ready(function () {
+                    $("#show").toggle();
+                });                                                                             
+                //update LessonsViewed table
+                //alert('done');
             }
         }
     </script>
+
+
+    <form id="show" hidden="hidden" action="@Url.Action("Create", "LessonViews")" method="post">
+        @Html.AntiForgeryToken()
+        @*<input type="hidden" id="UserID" name="UserID" value="" />*@
+        <input type="hidden" id="LessonID" name="LessonID" value="@Model.LessonID" />
+        <input type="hidden" id="DateViewed" name="DateViewed" value="@DateTime.Now" />
+        <input class="btn btn-success" type="submit" value="Verify Completion"  />
+    </form>
+
 </div>
+
+
+
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.LessonID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@*$.ajax({
+        type: 'POST',
+        contentType: 'application/json; charset = utf-8',
+        url: '@Url.Action("JsonCreateLv", "LessonViews")',
+        //data: JSON.stringify(release),
+        dataType: 'json',
+        success: function (result) {
+            alert('createAdded')
+        },
+        error: function (result) {
+            alert('somethingWentWrong')
+        }
+    });*@

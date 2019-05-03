@@ -29,7 +29,8 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
                         <li>@Html.ActionLink("Roles Admin", "Index", "RolesAdmin")</li>
                         <li>@Html.ActionLink("Users Admin", "Index", "UsersAdmin")</li>
                         <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
@@ -39,6 +40,13 @@
                         <li>@Html.ActionLink("Lessons", "Index", "Lessons")</li>
                         <li>@Html.ActionLink("Lessons Viewed", "Index", "LessonViews")</li>
                         <li>@Html.ActionLink("Jobs", "Index", "Jobs")</li>
+                    }
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Lessons", "Index", "Lessons")</li>
+                        <li>@Html.ActionLink("Lessons Viewed", "Index", "LessonViews")</li>
+                        <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
+
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

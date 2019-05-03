@@ -145,7 +145,12 @@ namespace IdentitySample.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            List<SelectListItem> jobList = new List<SelectListItem>();
+            //jobList.Add(db.Jobs);
             ViewBag.JobID = new SelectList(db.Jobs, "JobID", "JobName");
+            // = new SelectList(db.Jobs, "JobID", "JobName");
+            //SelectList JobList = new SelectList(db.Jobs, "JobID", "JobName");
+            //ViewBag.JobList = JobList;
             return View();
         }
 
@@ -166,6 +171,7 @@ namespace IdentitySample.Controllers
 
 
 
+
                 if (result.Succeeded)
                 {
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -182,6 +188,7 @@ namespace IdentitySample.Controllers
                     employee.LastName = model.LastName;
                     employee.JobID = model.JobID;
                     employee.IsManager = model.IsManager;
+                    
                     if (employee.IsManager == true)
                     {
                         Manager manager = new Manager();
@@ -190,6 +197,7 @@ namespace IdentitySample.Controllers
                         manager.FirstName = model.FirstName;
                         manager.LastName = model.LastName;
                         manager.JobID = model.JobID;
+
                     }
 
 
@@ -226,6 +234,10 @@ namespace IdentitySample.Controllers
                     {
                         return View(model);
                     }
+                    ViewBag.JobID = new SelectList(db.Jobs, "JobID", "JobName");
+                    //SelectList JobList = new SelectList(db.Jobs, "JobID", "JobName");
+                    //ViewBag.JobList = JobList;
+
 
 
                     return Redirect("/Home/Index");

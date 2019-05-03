@@ -14,6 +14,8 @@ namespace LMS.UI.Controllers
     {
         private LMSEntities db = new LMSEntities();
 
+        public IEnumerable<SelectListItem> jobID { get; set; }
+
         // GET: Jobs
         public ActionResult Index()
         {
