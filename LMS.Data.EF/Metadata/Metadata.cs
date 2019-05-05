@@ -157,6 +157,7 @@ namespace LMS.Data.EF
 
         [DisplayFormat(NullDisplayText = "--N/A--")]
         [StringLength(300, ErrorMessage = "Introduction must be less than 300 characters***")]
+        [UIHint("MultilineText")]
         public string Introduction { get; set; }
 
 

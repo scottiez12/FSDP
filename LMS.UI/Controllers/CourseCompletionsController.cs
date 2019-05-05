@@ -21,7 +21,29 @@ namespace LMS.UI.Controllers
         // GET: CourseCompletions
         public ActionResult Index()
         {
+
             var courseCompletions = db.CourseCompletions.Include(c => c.Cours);
+
+            var curUser = User.Identity.GetUserId();
+            if (User.IsInRole("Admin"))
+            {
+                return View(courseCompletions.ToList());
+            }
+
+            if (User.IsInRole("Manager"))
+            {
+                var empId = db.Employees.Select(b => b.ReportsToID).ToString();
+                var managerLink = db.Managers.Where(x => x.UserID == curUser).Where(a => a.ManagerID.ToString() == empId);
+
+                return View(managerLink.ToList());
+
+            }
+
+            if (User.IsInRole("Employee"))
+            {
+                var empLV = db.CourseCompletions.Where(x => x.UserID == curUser);
+                return View(empLV.ToList());
+            }           
             return View(courseCompletions.ToList());
         }
 

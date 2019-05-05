@@ -1,17 +1,16 @@
 ﻿@model LMS.Data.EF.Employee
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Employee Details";
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>Employee</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayName("First Name")
         </dt>
 
         <dd>
@@ -19,7 +18,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayName("Last Name")
         </dt>
 
         <dd>
@@ -27,7 +26,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.IsManager)
+            @Html.DisplayName("Manager Credentials")
         </dt>
 
         <dd>
@@ -42,16 +41,16 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.JobID)
+            @Html.DisplayName("Job ID")
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.JobID)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.JobID)
+            @Html.DisplayName("Reports to ID")
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.ReportsToID)
         </dd>
 
     </dl>

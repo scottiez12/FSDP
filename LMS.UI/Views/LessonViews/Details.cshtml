@@ -1,25 +1,24 @@
 ﻿@model LMS.Data.EF.LessonView
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Lesson View Details";
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>LessonView</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.UserID)
+            @Html.DisplayName("Employee")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UserID)
+            @Html.DisplayFor(model => model.Employee.FullName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.DateViewed)
+            @Html.DisplayName("Date Viewed")
         </dt>
 
         <dd>
@@ -27,16 +26,31 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Lesson.LessonTitle)
+            @Html.DisplayName("Lesson")
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Lesson.LessonTitle)
         </dd>
 
+        <dt>
+            @Html.DisplayName("Job")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.Job)
+        </dd>
+        <dt>
+            @Html.DisplayName("Course")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Lesson.Cours)
+        </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.LessonViewID }) |
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.LessonViewID }) |
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>

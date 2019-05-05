@@ -29,12 +29,11 @@
 <h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>Lesson</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
             @*@Html.DisplayNameFor(model => model.LessonTitle)*@
-            <b>Lesson: </b>
+            @Html.DisplayName("Lesson Title")
         </dt>
 
         <dd>
@@ -42,7 +41,7 @@
         </dd>
         <dt>
             @*@Html.DisplayNameFor(model => model.Cours.CourseName)*@
-            <b>Course: </b>
+           @Html.DisplayName("Course")
         </dt>
 
         <dd>
@@ -55,7 +54,9 @@
         <dd>
             @Html.DisplayFor(model => model.Introduction)
         </dd>
-        <dt>Accompany PDF: </dt>
+        <dt>
+            @Html.DisplayName("Accompanyment PDF")
+        </dt>
         <dd>
             @if (Model.PdfFileName != null)
             {

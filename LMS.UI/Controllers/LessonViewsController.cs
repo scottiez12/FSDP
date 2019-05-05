@@ -50,6 +50,29 @@ namespace LMS.UI.Controllers
         public ActionResult Index()
         {
             var lessonViews = db.LessonViews.Include(l => l.Lesson);
+            var curUser = User.Identity.GetUserId();
+            if (User.IsInRole("Admin"))
+            {
+                return View(lessonViews.ToList());
+            }
+
+            if (User.IsInRole("Manager"))
+            {
+                var empId = db.Employees.Select(b => b.ReportsToID).ToString();
+                var managerLink = db.Managers.Where(x => x.UserID == curUser).Where(a => a.ManagerID.ToString() == empId );
+
+                return View(managerLink.ToList());
+
+            }
+
+            if (User.IsInRole("Employee"))
+            {
+                var empLV = db.LessonViews.Where(x => x.UserID == curUser);
+                return View(empLV.ToList());
+            }
+
+
+
             return View(lessonViews.ToList());
         }
 
