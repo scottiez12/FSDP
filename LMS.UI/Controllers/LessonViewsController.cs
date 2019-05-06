@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using LMS.Data.EF;
 using Microsoft.AspNet.Identity;
+using System.Net.Mail;
+
 
 
 namespace LMS.UI.Controllers
@@ -52,7 +54,7 @@ namespace LMS.UI.Controllers
             if (User.IsInRole("Manager"))
             {
                 var empId = db.Employees.Select(b => b.ReportsToID).ToString();
-                var managerLink = db.Managers.Where(x => x.UserID == curUser).Where(a => a.ManagerID.ToString() == empId );
+                var managerLink = db.Managers.Where(x => x.UserID == curUser).Where(a => a.ManagerID.ToString() == empId);
 
                 return View(managerLink.ToList());
 
@@ -106,125 +108,137 @@ namespace LMS.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "LessonViewID,UserID,LessonID,DateViewed")] LessonView lessonView)
         {
-            var curUser = User.Identity.GetUserId();
-            var userID = db.Employees.Where(x => x.UserID == curUser);
-            lessonView.UserID = curUser;
-            var LesID = db.Lessons.Select(x => x.LessonID);
 
-            var cIDlID =
-                from C in db.Courses
-                join L in db.Lessons on C.CourseID equals L.CourseID
-                join LV in db.LessonViews on L.LessonID equals LV.LessonID
-                join E in db.Employees on LV.UserID equals E.UserID
-                where C.CourseID == L.CourseID
-                where L.LessonID == LV.LessonID
-                where LV.UserID == E.UserID
-                select E.UserID.ToList();
-
-            var lIDcID =
-                from c in db.Courses
-                join L in db.Lessons on c.CourseID equals L.CourseID
-                select L.LessonID;
-            ViewBag.CID = lIDcID;
-
-            var empID = db.Employees.Select(x => x.UserID);
-                 
             if (ModelState.IsValid)
             {
-                
                 db.LessonViews.Add(lessonView);
                 db.SaveChanges();
+                //list of lession views for the current user
+                var curUser = User.Identity.GetUserId();
+                var userLVs = (from LV in db.LessonViews
+                               where LV.UserID == curUser
+                               select LV).ToList();
+                //the current lessonviews courseID
+                var currentCourseID = lessonView.Lesson.CourseID;
+                //count the number of lessonviews with this current courseID
+                var countLVsInCourse = userLVs.Where(x => x.Lesson.CourseID == currentCourseID).Count();
 
-                foreach (var item in cIDlID)
+                if (countLVsInCourse == 2)
                 {
-                    if (db.LessonViews.Count() == 2)
+                    //this is where we create the CourseCompletion
+                    //based on that courseID and the current userID
+                    CourseCompletion courseCompletion = new CourseCompletion();
+                    courseCompletion.UserID = curUser;
+                    courseCompletion.CourseID = currentCourseID;
+                    courseCompletion.DateCompleted = DateTime.Now;
+
+                    db.CourseCompletions.Add(courseCompletion);
+                    db.SaveChanges();
+
+                    //send an email to that persons manager..
+                    var curUserName = db.Employees.Where(x => x.UserID == curUser).Select(x => x.FullName).FirstOrDefault();
+                    string body = string.Format($"Name: {curUserName}, <br />Has Completed Course {currentCourseID}<br /> Completion Time: {courseCompletion.DateCompleted} <br />");
+                    //create and configure the mail message (this is the letter)
+                    MailMessage msg = new MailMessage("Admin@scottiez.com", //where we are sending from
+                       "Admin@scottiez.com",//where we are sending to
+                       curUserName + " Course Completion Alert", //subject of the message
+                       body);
+                    //configure the mail message object (envelope)
+                    msg.IsBodyHtml = true; //body of the message is HTML
+                                           //msg.cc.Add("ziggish@att.net");  sends a carbon copy
+                                           //msg.Bcc.Add("ziggish@att.net"); //send a blind carbon copy so that no one knows that you got a CC
+                    msg.Priority = MailPriority.High; 
+                    //create and configure the SMTP client  ... Standard Mail Transfer Protocol (mail carrier)
+                    SmtpClient client = new SmtpClient("mail.scottiez.com");  //mail person
+                    client.Credentials = new NetworkCredential("Admin@scottiez.com", "P@ssw0rd"); 
+                    client.Port = 8889;
+                    //the original is 25, but in case that port is being blocked, you can change the port number here
+                    using (client)
                     {
-                        CourseCompletion courseCompletion = new CourseCompletion();
-                        courseCompletion.UserID = lessonView.UserID;
-                        courseCompletion.CourseID = ViewBag.CID;
-                        courseCompletion.DateCompleted = DateTime.Now;
-
-
-                        db.CourseCompletions.Add(courseCompletion);
-                        db.SaveChanges();
-
-                        return RedirectToAction("ContactManagerCompletion", "CourseCompletionsController");
+                        try
+                        {
+                            client.Send(msg); //sending the MailMessage object
+                        }
+                        catch
+                        {
+                            ViewBag.ErrorMessage = "There was an error sending your message, please email admin@scottiez.com";
+                            return View();
+                        }
                     }
+                    return RedirectToAction("Index");
                 }
 
-                return RedirectToAction("Index");
+                ViewBag.LessonID = new SelectList(db.Lessons, "LessonID", "LessonTitle", lessonView.LessonID);
+                return View(lessonView);
             }
-
-            ViewBag.LessonID = new SelectList(db.Lessons, "LessonID", "LessonTitle", lessonView.LessonID);
-            return View(lessonView);
+            return View();
         }
+// GET: LessonViews/Edit/5
+public ActionResult Edit(int? id)
+{
+    if (id == null)
+    {
+        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+    }
+    LessonView lessonView = db.LessonViews.Find(id);
+    if (lessonView == null)
+    {
+        return HttpNotFound();
+    }
+    ViewBag.LessonID = new SelectList(db.Lessons, "LessonID", "LessonTitle", lessonView.LessonID);
+    return View(lessonView);
+}
 
-        // GET: LessonViews/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            LessonView lessonView = db.LessonViews.Find(id);
-            if (lessonView == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.LessonID = new SelectList(db.Lessons, "LessonID", "LessonTitle", lessonView.LessonID);
-            return View(lessonView);
-        }
+// POST: LessonViews/Edit/5
+// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+[HttpPost]
+[ValidateAntiForgeryToken]
+public ActionResult Edit([Bind(Include = "LessonViewID,UserID,LessonID,DateViewed")] LessonView lessonView)
+{
+    if (ModelState.IsValid)
+    {
+        db.Entry(lessonView).State = EntityState.Modified;
+        db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+    ViewBag.LessonID = new SelectList(db.Lessons, "LessonID", "LessonTitle", lessonView.LessonID);
+    return View(lessonView);
+}
 
-        // POST: LessonViews/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "LessonViewID,UserID,LessonID,DateViewed")] LessonView lessonView)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(lessonView).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.LessonID = new SelectList(db.Lessons, "LessonID", "LessonTitle", lessonView.LessonID);
-            return View(lessonView);
-        }
+// GET: LessonViews/Delete/5
+public ActionResult Delete(int? id)
+{
+    if (id == null)
+    {
+        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+    }
+    LessonView lessonView = db.LessonViews.Find(id);
+    if (lessonView == null)
+    {
+        return HttpNotFound();
+    }
+    return View(lessonView);
+}
 
-        // GET: LessonViews/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            LessonView lessonView = db.LessonViews.Find(id);
-            if (lessonView == null)
-            {
-                return HttpNotFound();
-            }
-            return View(lessonView);
-        }
+// POST: LessonViews/Delete/5
+[HttpPost, ActionName("Delete")]
+[ValidateAntiForgeryToken]
+public ActionResult DeleteConfirmed(int id)
+{
+    LessonView lessonView = db.LessonViews.Find(id);
+    db.LessonViews.Remove(lessonView);
+    db.SaveChanges();
+    return RedirectToAction("Index");
+}
 
-        // POST: LessonViews/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            LessonView lessonView = db.LessonViews.Find(id);
-            db.LessonViews.Remove(lessonView);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+protected override void Dispose(bool disposing)
+{
+    if (disposing)
+    {
+        db.Dispose();
+    }
+    base.Dispose(disposing);
+}
     }
 }
