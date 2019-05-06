@@ -76,27 +76,13 @@ namespace LMS.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CourseCompletionID,UserID,CourseID,DateCompleted")] CourseCompletion courseCompletion)
         {
-            var CurUser = User.Identity.GetUserId();
-            var lessonsAmount = db.Lessons.Select(x => x.LessonID).Count();
-            var lessonViewsAmount = db.LessonViews.Select(x => x.LessonID).Count();
-            var lessonVerif = (lessonViewsAmount) - (lessonsAmount);
-
-
-
+            //var CurUser = User.Identity.GetUserId();
+            //var lessonsAmount = db.Lessons.Select(x => x.LessonID).Count();
+            //var lessonViewsAmount = db.LessonViews.Select(x => x.LessonID).Count();
+            //var lessonVerif = (lessonViewsAmount) - (lessonsAmount);
             if (ModelState.IsValid)
             {
-
-                //if (User.IsInRole("Employee") && lessonVerif == 0)
-                //{
-                //    db.CourseCompletions.Add(courseCompletion);
-
-
-                //}//if userLoop
-
-                ////send the email to the applicable manager here
-
-
-
+                db.CourseCompletions.Add(courseCompletion);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }//end modelState.isValid

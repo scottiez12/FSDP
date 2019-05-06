@@ -40,7 +40,7 @@ namespace LMS.Data.EF
         public int CourseCompletionID { get; set; }
 
         [Required(ErrorMessage = "Required***")]
-        [Range(128,128, ErrorMessage = "Please enter a valid User ID***")]
+        //[Range(128,128, ErrorMessage = "Please enter a valid User ID***")]
         public string UserID { get; set; }
 
         [Required(ErrorMessage = "Required***")]
@@ -48,7 +48,7 @@ namespace LMS.Data.EF
 
         [Required(ErrorMessage = "Required***")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+       // [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public System.DateTime DateCompleted { get; set; }
 
     }

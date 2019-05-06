@@ -150,7 +150,7 @@
 
     <form id="show" hidden="hidden" action="@Url.Action("Create", "LessonViews")" method="post">
         @Html.AntiForgeryToken()
-        @*<input type="hidden" id="UserID" name="UserID" value="" />*@
+        @*<input type="hidden" id="UserID" name="UserID" value="@User.Identity.GetUserId()" />*@
         <input type="hidden" id="LessonID" name="LessonID" value="@Model.LessonID" />
         <input type="hidden" id="DateViewed" name="DateViewed" value="@DateTime.Now" />
         <input class="btn btn-success" type="submit" value="Verify Completion"  />

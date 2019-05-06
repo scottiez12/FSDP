@@ -109,21 +109,36 @@ namespace LMS.UI.Controllers
         public ActionResult Create([Bind(Include = "LessonViewID,UserID,LessonID,DateViewed")] LessonView lessonView)
         {
 
+            lessonView.UserID = User.Identity.GetUserId();
+
             if (ModelState.IsValid)
-            {
-                db.LessonViews.Add(lessonView);
-                db.SaveChanges();
+            {   //the current lessonviews courseID
+                //var id = lessonView.Lesson.CourseID;
+
+                var currentCourseID = (from l in db.Lessons
+                                       join c in db.Courses on l.CourseID equals c.CourseID
+                                       where l.LessonID == lessonView.LessonID
+                                       select c.CourseID).FirstOrDefault();
+                //this var above isin't returning anything.. its FirstOrDefault() == 0 and if you use Single() it says nothing in sequence
+
+
+                                    
+
+
+
                 //list of lession views for the current user
                 var curUser = User.Identity.GetUserId();
                 var userLVs = (from LV in db.LessonViews
                                where LV.UserID == curUser
-                               select LV).ToList();
-                //the current lessonviews courseID
-                var currentCourseID = lessonView.Lesson.CourseID;
+                               select LV).ToList();   
+                
+                db.LessonViews.Add(lessonView);
+                db.SaveChanges();         
+                                           
                 //count the number of lessonviews with this current courseID
                 var countLVsInCourse = userLVs.Where(x => x.Lesson.CourseID == currentCourseID).Count();
-
-                if (countLVsInCourse == 2)
+              
+                if (countLVsInCourse >= 2)
                 {
                     //this is where we create the CourseCompletion
                     //based on that courseID and the current userID
@@ -136,7 +151,11 @@ namespace LMS.UI.Controllers
                     db.SaveChanges();
 
                     //send an email to that persons manager..
+
+                    //this is where the debugger is throwing errors but everything else is working so far
                     var curUserName = db.Employees.Where(x => x.UserID == curUser).Select(x => x.FullName).FirstOrDefault();
+
+
                     string body = string.Format($"Name: {curUserName}, <br />Has Completed Course {currentCourseID}<br /> Completion Time: {courseCompletion.DateCompleted} <br />");
                     //create and configure the mail message (this is the letter)
                     MailMessage msg = new MailMessage("Admin@scottiez.com", //where we are sending from
