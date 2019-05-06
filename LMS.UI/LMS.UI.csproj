@@ -331,6 +331,25 @@
     <Content Include="Content\documents\20190502jQueryLabs.pdf" />
     <Content Include="Content\documents\jQueryLabs.pdf.pdf" />
     <Content Include="Content\documents\System.Web.HttpPostedFileWrapper2019.pdf" />
+    <Content Include="Views\_templateViews\404.html" />
+    <Content Include="Views\_templateViews\about.html" />
+    <Content Include="Views\_templateViews\base-css.html" />
+    <Content Include="Views\_templateViews\blog_left_sidebar.html" />
+    <Content Include="Views\_templateViews\blog_right_sidebar.html" />
+    <Content Include="Views\_templateViews\components.html" />
+    <Content Include="Views\_templateViews\contact.html" />
+    <Content Include="Views\_templateViews\icons.html" />
+    <Content Include="Views\_templateViews\index_template.html" />
+    <Content Include="Views\_templateViews\list.html" />
+    <Content Include="Views\_templateViews\portfolio-2cols.html" />
+    <Content Include="Views\_templateViews\portfolio-3cols.html" />
+    <Content Include="Views\_templateViews\portfolio-4cols.html" />
+    <Content Include="Views\_templateViews\portfolio-detail.html" />
+    <Content Include="Views\_templateViews\post_left_sidebar.html" />
+    <Content Include="Views\_templateViews\post_right_sidebar.html" />
+    <Content Include="Views\_templateViews\pricingtable.html" />
+    <Content Include="Views\_templateViews\Readme.txt" />
+    <Content Include="Views\_templateViews\scaffolding.html" />
     <Content Include="_archive\Plato\404.html" />
     <Content Include="_archive\Plato\about.html" />
     <Content Include="_archive\Plato\assets\color\default.css" />
@@ -568,12 +587,12 @@
     <Content Include="_archive\Plato\assets\font\fontawesome\fontawesome-webfont.woff" />
     <Content Include="_archive\Plato\assets\font\fontawesome\FontAwesome.otf" />
     <Content Include="Views\Shared\_OriginalLayout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartialOriginal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\" />
     <Folder Include="Content\videos\" />
-    <Folder Include="Views\_templateViews\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
