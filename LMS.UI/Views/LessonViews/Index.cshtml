@@ -63,15 +63,15 @@
         <td>
             @Html.DisplayFor(modelItem => item.Lesson.Cours.CourseName)
         </td>
-        
-        @if (User.IsInRole("Admin"))
-        {
-            @Html.ActionLink("Edit", "Edit", new { id = item.LessonViewID }) @:|
-            @Html.ActionLink("Details", "Details", new { id = item.LessonViewID }) @:|
-        @Html.ActionLink("Delete", "Delete", new { id = item.LessonViewID }) @:|
-        
-        }
+        <td>
+            @if (User.IsInRole("Admin"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.LessonViewID })
+                @Html.ActionLink("Details", "Details", new { id = item.LessonViewID })
+                @Html.ActionLink("Delete", "Delete", new { id = item.LessonViewID }) 
 
+            }
+        </td>
         <td>
             @Html.ActionLink("Go To Course Completions", "Index", "CourseCompletions", null, new {id = item.LessonViewID})
         </td>

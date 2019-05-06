@@ -16,34 +16,27 @@ namespace LMS.UI.Controllers
     {
         private LMSEntities db = new LMSEntities();
 
-        [HttpGet]
-        public ActionResult JsonCreateLv()
+        /*This is where the logic needs to go for the Course Completion stuff
+            Some thoughts on this..
+            Loop though the course for lesson views tied to the user, then redirect to the create of course completion
+
+            Create a list of records of how many lesson views in a course by the UserID, and if that number is == 3 (in this case)
+                ,then create a course completion and send the email in the course completion actions (or maybe here.. IDK yet..)                        
+            */
+        //get : LessonViewList
+        public ActionResult GetViewList()
         {
-            ViewBag.JsonCreate = new SelectList(db.Lessons, "LessonID", "LessonTitle");
+            //var Views = db.LessonViews.ToList();
+            //foreach (var item in db.Employees.Select(x=> x.UserID).Where(db.LessonViews)
+            //{
+
+            //}
+
+
 
             return View();
         }
 
-
-        [HttpPost]
-        public ActionResult JsonCreateLv([Bind(Include = "LessonViewID,UserID,LessonID,DateViewed")]LessonView lvw)
-        {
-
-            //create the item in the table
-            LessonView lessonView = new LessonView();
-            //props
-            lessonView.DateViewed = DateTime.Now;
-            lessonView.UserID = User.Identity.ToString() ;
-            lessonView.LessonID = ViewBag.curLess;
-
-
-            db.LessonViews.Add(lvw);
-            db.SaveChanges();
-            string message = $"{User.Identity.Name}, your Course Completion has been updated.";
-            return Json(new { Message = message, JsonRequestBehavior.AllowGet });
-        }
-
-        
 
 
         // GET: LessonViews
@@ -101,6 +94,14 @@ namespace LMS.UI.Controllers
         // POST: LessonViews/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        /*This is where the logic needs to go for the Course Completion stuff
+       Some thoughts on this..
+       Loop though the course for lesson views tied to the user, then redirect to the create of course completion
+
+       Create a list of records of how many lesson views in a course by the UserID, and if that number is == 3 (in this case)
+           ,then create a course completion and send the email in the course completion actions (or maybe here.. IDK yet..)                        
+       */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "LessonViewID,UserID,LessonID,DateViewed")] LessonView lessonView)
@@ -108,11 +109,49 @@ namespace LMS.UI.Controllers
             var curUser = User.Identity.GetUserId();
             var userID = db.Employees.Where(x => x.UserID == curUser);
             lessonView.UserID = curUser;
+            var LesID = db.Lessons.Select(x => x.LessonID);
+
+            var cIDlID =
+                from C in db.Courses
+                join L in db.Lessons on C.CourseID equals L.CourseID
+                join LV in db.LessonViews on L.LessonID equals LV.LessonID
+                join E in db.Employees on LV.UserID equals E.UserID
+                where C.CourseID == L.CourseID
+                where L.LessonID == LV.LessonID
+                where LV.UserID == E.UserID
+                select E.UserID.ToList();
+
+            var lIDcID =
+                from c in db.Courses
+                join L in db.Lessons on c.CourseID equals L.CourseID
+                select L.LessonID;
+            ViewBag.CID = lIDcID;
+
+            var empID = db.Employees.Select(x => x.UserID);
+                 
             if (ModelState.IsValid)
             {
                 
                 db.LessonViews.Add(lessonView);
                 db.SaveChanges();
+
+                foreach (var item in cIDlID)
+                {
+                    if (db.LessonViews.Count() == 2)
+                    {
+                        CourseCompletion courseCompletion = new CourseCompletion();
+                        courseCompletion.UserID = lessonView.UserID;
+                        courseCompletion.CourseID = ViewBag.CID;
+                        courseCompletion.DateCompleted = DateTime.Now;
+
+
+                        db.CourseCompletions.Add(courseCompletion);
+                        db.SaveChanges();
+
+                        return RedirectToAction("ContactManagerCompletion", "CourseCompletionsController");
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
 

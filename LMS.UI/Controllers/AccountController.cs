@@ -161,8 +161,11 @@ namespace IdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-
-
+            ViewBag.JobID = new SelectList(db.Jobs, "JobID", "JobName");
+            var managerID = db.Managers.Where(x => x.ManagerID.ToString() == x.Employees.Select(a => a.ReportsToID).ToString());
+            ViewBag.mID = managerID;
+            LMSEntities db = new LMSEntities();
+            var manID = db.Managers.Select(x => x.ManagerID);
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
@@ -221,7 +224,7 @@ namespace IdentitySample.Controllers
 
                         
                     }
-                    else if (ModelState.IsValid)
+                    else if (ModelState.IsValid && employee.IsManager == false)
                     {
                         db.Employees.Add(employee);
                         db.SaveChanges();

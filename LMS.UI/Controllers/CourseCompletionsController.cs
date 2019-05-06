@@ -86,14 +86,14 @@ namespace LMS.UI.Controllers
             if (ModelState.IsValid)
             {
 
-                if (User.IsInRole("Employee") && lessonVerif == 0)
-                {
-                    db.CourseCompletions.Add(courseCompletion);
+                //if (User.IsInRole("Employee") && lessonVerif == 0)
+                //{
+                //    db.CourseCompletions.Add(courseCompletion);
 
 
-                }//if userLoop
+                //}//if userLoop
 
-                //send the email to the applicable manager here
+                ////send the email to the applicable manager here
 
 
 
@@ -114,16 +114,16 @@ namespace LMS.UI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult ContactManagerCompletion(Employee x, CourseCompletion y)
+        public ActionResult ContactManagerCompletion(CourseCompletion x)
         {
             //create a body for the email (these are words..)
 
-            string body = string.Format($"Name: {x.FullName}<br />Has requested Manager priviledges for {x.JobID.ToString()}<br /> User Email: {x.Email} <br />");
+            string body = string.Format($"Name: {x.UserID}, {x.Employee}<br />Has Completed Course {x.CourseID}<br /> Completion Time: {x.DateCompleted} <br />");
 
             //create and configure the mail message (this is the letter)
             MailMessage msg = new MailMessage("Admin@scottiez.com", //where we are sending from
                "Admin@scottiez.com",//where we are sending to
-               x.FullName + " Company Registration Alert", //subject of the message
+               x.UserID + " Course Completion Alert", //subject of the message
                body);
 
             //configure the mail message object (envelope)
