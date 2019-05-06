@@ -27,7 +27,7 @@ namespace LMS.Data.EF
         public bool IsManager { get; set; }
         public string Email { get; set; }
         public int JobID { get; set; }
-        public int ReportsToID { get; set; }
+        public Nullable<int> ReportsToID { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

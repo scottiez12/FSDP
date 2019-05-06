@@ -161,10 +161,11 @@ namespace IdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            LMSEntities db = new LMSEntities();
+
             ViewBag.JobID = new SelectList(db.Jobs, "JobID", "JobName");
             var managerID = db.Managers.Where(x => x.ManagerID.ToString() == x.Employees.Select(a => a.ReportsToID).ToString());
             ViewBag.mID = managerID;
-            LMSEntities db = new LMSEntities();
             var manID = db.Managers.Select(x => x.ManagerID);
             if (ModelState.IsValid)
             {
@@ -205,7 +206,7 @@ namespace IdentitySample.Controllers
 
 
                     //create the user, save them
-                    LMSEntities db = new LMSEntities();
+                   // LMSEntities db = new LMSEntities();
                     //add the user
 
                     /*This would be a good place to add an employee as a manager if they've already created an account... Some kind of validation here..

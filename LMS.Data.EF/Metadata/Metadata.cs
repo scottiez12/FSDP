@@ -85,7 +85,6 @@ namespace LMS.Data.EF
         [Required(ErrorMessage = "Required***")]
         public int JobID { get; set; }
 
-        [Required(ErrorMessage = "Required***")]
         public int ReportsToID { get; set; }
 
 
