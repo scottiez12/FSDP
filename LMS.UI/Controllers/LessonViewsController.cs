@@ -153,14 +153,19 @@ namespace LMS.UI.Controllers
                     //send an email to that persons manager..
 
                     //this is where the debugger is throwing errors but everything else is working so far
-                    var curUserName = db.Employees.Where(x => x.UserID == curUser).Select(x => x.FullName).FirstOrDefault();
 
 
-                    string body = string.Format($"Name: {curUserName}, <br />Has Completed Course {currentCourseID}<br /> Completion Time: {courseCompletion.DateCompleted} <br />");
+
+
+                    var curUserNameFirst = db.Employees.Where(x => x.UserID == curUser).Select(x => x.FirstName).ToString();
+                    var curUserNameLast = db.Employees.Where(x => x.UserID == curUser).Select(x => x.LastName).ToString();
+                    
+
+                    string body = string.Format($"Name:{curUserNameFirst} {curUserNameLast}, <br />Has Completed Course {currentCourseID}<br /> Completion Time: {courseCompletion.DateCompleted} <br />");
                     //create and configure the mail message (this is the letter)
                     MailMessage msg = new MailMessage("Admin@scottiez.com", //where we are sending from
                        "Admin@scottiez.com",//where we are sending to
-                       curUserName + " Course Completion Alert", //subject of the message
+                       "Course Completion Alert", //subject of the message
                        body);
                     //configure the mail message object (envelope)
                     msg.IsBodyHtml = true; //body of the message is HTML
