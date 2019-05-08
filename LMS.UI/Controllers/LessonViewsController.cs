@@ -159,9 +159,9 @@ namespace LMS.UI.Controllers
 
                     var curUserNameFirst = db.Employees.Where(x => x.UserID == curUser).Select(x => x.FirstName).ToString();
                     var curUserNameLast = db.Employees.Where(x => x.UserID == curUser).Select(x => x.LastName).ToString();
-                    
+                    var curEmp = db.Employees.Where(x => x.UserID == curUser).FirstOrDefault();
 
-                    string body = string.Format($"Name:{curUserNameFirst} {curUserNameLast}, <br />Has Completed Course {currentCourseID}<br /> Completion Time: {courseCompletion.DateCompleted} <br />");
+                    string body = string.Format($"Name:{curEmp.FullName} , <br />Has Completed Course {currentCourseID}<br /> Completion Time: {courseCompletion.DateCompleted} <br />");
                     //create and configure the mail message (this is the letter)
                     MailMessage msg = new MailMessage("Admin@scottiez.com", //where we are sending from
                        "Admin@scottiez.com",//where we are sending to

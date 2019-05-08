@@ -586,8 +586,9 @@
     <Content Include="_archive\Plato\assets\font\fontawesome\fontawesome-webfont.ttf" />
     <Content Include="_archive\Plato\assets\font\fontawesome\fontawesome-webfont.woff" />
     <Content Include="_archive\Plato\assets\font\fontawesome\FontAwesome.otf" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LayoutWTemp2.cshtml" />
     <Content Include="Views\Shared\_LoginPartialOriginal.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
