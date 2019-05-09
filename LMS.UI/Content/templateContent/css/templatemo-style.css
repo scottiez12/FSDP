@@ -702,6 +702,7 @@ section {
 
 #contact {
     background: #3f51b5;
+        margin-top: 89px;
 }
 
     #contact h2 {
@@ -710,6 +711,7 @@ section {
 
     #contact .section-title {
         padding-bottom: 20px;
+            margin-left: 3%;
     }
 
     #contact h2 > small,

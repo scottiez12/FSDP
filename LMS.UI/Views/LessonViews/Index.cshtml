@@ -66,8 +66,8 @@
         <td>
             @if (User.IsInRole("Admin"))
             {
-                @Html.ActionLink("Edit", "Edit", new { id = item.LessonViewID })
-                @Html.ActionLink("Details", "Details", new { id = item.LessonViewID })
+                @Html.ActionLink("Edit", "Edit", new { id = item.LessonViewID }) @:|
+                @Html.ActionLink("Details", "Details", new { id = item.LessonViewID }) @:|
                 @Html.ActionLink("Delete", "Delete", new { id = item.LessonViewID }) 
 
             }
