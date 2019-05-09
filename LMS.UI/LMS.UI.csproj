@@ -204,6 +204,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\_Custom.css" />
     <Content Include="Content\css\_customCSS.css" />
+    <Content Include="Content\images\codeSnip1.PNG" />
+    <Content Include="Content\images\codesnip2.PNG" />
     <Content Include="Content\images\owlpic.jpg" />
     <Content Include="Content\js\_customJS.js" />
     <Content Include="Content\templateContent\css\bootstrap.min.css" />
