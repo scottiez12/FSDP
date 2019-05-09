@@ -1,38 +1,42 @@
-﻿<section id="intro">
-    <div class="container">
-        <div class="row">
-            <div class="span6">
-                <h2><strong>CXC Logistics <span class="highlight primary">Training and Education</span></strong></h2>
-                <p class="lead">
-                    Welcome to the CXC Logistics Employee Portal
-                </p>
-                @*<ul class="list list-ok strong bigger">
-                        <li>100% Compatible with twitter bootstrap</li>
-                        <li>Valid HTML5 code and well structured</li>
-                        <li>Really updatable and easy to customize</li>
-                    </ul>*@
-            </div>
-            @*<div class="span6">
-                    <div class="group section-wrap upper" id="upper">
-                        <div class="section-2 group">
-                            <ul id="images" class="rs-slider">
-                                <li class="group">
-                                    <a href="#">
-                                        <img src="assets/img/slides/refine/slide1.png" alt="" />
-                                    </a>
-                                </li>
-                                <li class="group">
-                                    <a href="#" class="slide-parent">
-                                        <img src="assets/img/slides/refine/slide2.png" alt="" />
-                                    </a>
-                                </li>
-                                <li class="group">
-                                    <img src="assets/img/slides/refine/slide3.png" alt="" />
-                                </li>
-                            </ul>
+﻿<section id="home">
+    <div class="row">
+
+        <div class="owl-carousel owl-theme home-slider">
+            <div class="item item-first">
+                <div class="caption">
+                    <div class="container">
+                        <div class="col-md-6 col-sm-12">
+                            <h1>Employee Portal for Continued Training and Education</h1>
+                            <h3>Please login above to access your current courses.</h3>
+                            <a href="@Url.Action("Login", "Account")" class="section-btn btn btn-default smoothScroll">Click here to Login</a>
                         </div>
                     </div>
-                </div>*@
+                </div>
+            </div>
+
+            <div class="item item-second">
+                <div class="caption">
+                    <div class="container">
+                        <div class="col-md-6 col-sm-12">
+                            <h1>Having problems?</h1>
+                            <h3>Contact administration concerning all broken content.</h3>
+                            <a href="@Url.Action("Contact", "Home")" class="section-btn btn btn-default smoothScroll">Click here to Contact</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="item item-third">
+                <div class="caption">
+                    <div class="container">
+                        <div class="col-md-6 col-sm-12">
+                            <h1>Efficient Learning Methods</h1>
+                            <h3>Nam eget sapien vel nibh euismod vulputate in vel nibh. Quisque eu ex eu urna venenatis sollicitudin ut at libero. Visit <a rel="nofollow" href="https://www.facebook.com/templatemo">templatemo</a> page.</h3>
+                            <a href="#contact" class="section-btn btn btn-default smoothScroll">Let's chat</a>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
         </div>
     </div>
 </section>

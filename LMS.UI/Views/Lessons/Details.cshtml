@@ -162,19 +162,9 @@
 
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.LessonID }) |
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.LessonID }) @:|
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>
-@*$.ajax({
-        type: 'POST',
-        contentType: 'application/json; charset = utf-8',
-        url: '@Url.Action("JsonCreateLv", "LessonViews")',
-        //data: JSON.stringify(release),
-        dataType: 'json',
-        success: function (result) {
-            alert('createAdded')
-        },
-        error: function (result) {
-            alert('somethingWentWrong')
-        }
-    });*@

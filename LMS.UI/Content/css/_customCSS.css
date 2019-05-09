@@ -2,6 +2,15 @@
 }
 
 .body-content{
-   
+   margin-top: 16em;
     
 }
+.custom-navbar .nav li a a.smoothScroll {
+
+    padding-right: 10px;
+    padding-left: 10px;
+
+}
+
+
+

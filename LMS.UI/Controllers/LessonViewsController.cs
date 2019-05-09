@@ -108,24 +108,13 @@ namespace LMS.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "LessonViewID,UserID,LessonID,DateViewed")] LessonView lessonView)
         {
-
             lessonView.UserID = User.Identity.GetUserId();
-
             if (ModelState.IsValid)
             {   //the current lessonviews courseID
-                //var id = lessonView.Lesson.CourseID;
-
                 var currentCourseID = (from l in db.Lessons
                                        join c in db.Courses on l.CourseID equals c.CourseID
                                        where l.LessonID == lessonView.LessonID
                                        select c.CourseID).FirstOrDefault();
-                //this var above isin't returning anything.. its FirstOrDefault() == 0 and if you use Single() it says nothing in sequence
-
-
-                                    
-
-
-
                 //list of lession views for the current user
                 var curUser = User.Identity.GetUserId();
                 var userLVs = (from LV in db.LessonViews
@@ -133,11 +122,9 @@ namespace LMS.UI.Controllers
                                select LV).ToList();   
                 
                 db.LessonViews.Add(lessonView);
-                db.SaveChanges();         
-                                           
+                db.SaveChanges();                                                   
                 //count the number of lessonviews with this current courseID
-                var countLVsInCourse = userLVs.Where(x => x.Lesson.CourseID == currentCourseID).Count();
-              
+                var countLVsInCourse = userLVs.Where(x => x.Lesson.CourseID == currentCourseID).Count();            
                 if (countLVsInCourse >= 2)
                 {
                     //this is where we create the CourseCompletion
@@ -146,28 +133,19 @@ namespace LMS.UI.Controllers
                     courseCompletion.UserID = curUser;
                     courseCompletion.CourseID = currentCourseID;
                     courseCompletion.DateCompleted = DateTime.Now;
-
                     db.CourseCompletions.Add(courseCompletion);
                     db.SaveChanges();
-
                     //send an email to that persons manager..
-
-                    //this is where the debugger is throwing errors but everything else is working so far
-
-
-
-
                     var curUserNameFirst = db.Employees.Where(x => x.UserID == curUser).Select(x => x.FirstName).ToString();
                     var curUserNameLast = db.Employees.Where(x => x.UserID == curUser).Select(x => x.LastName).ToString();
                     var curEmp = db.Employees.Where(x => x.UserID == curUser).FirstOrDefault();
 
                     string body = string.Format($"Name:{curEmp.FullName} , <br />Has Completed Course {currentCourseID}<br /> Completion Time: {courseCompletion.DateCompleted} <br />");
-                    //create and configure the mail message (this is the letter)
-                    MailMessage msg = new MailMessage("Admin@scottiez.com", //where we are sending from
-                       "Admin@scottiez.com",//where we are sending to
-                       "Course Completion Alert", //subject of the message
+                    MailMessage msg = new MailMessage("Admin@scottiez.com", 
+                       "Admin@scottiez.com",
+                       "Course Completion Alert",
                        body);
-                    //configure the mail message object (envelope)
+                    
                     msg.IsBodyHtml = true; //body of the message is HTML
                                            //msg.cc.Add("ziggish@att.net");  sends a carbon copy
                                            //msg.Bcc.Add("ziggish@att.net"); //send a blind carbon copy so that no one knows that you got a CC
@@ -193,7 +171,7 @@ namespace LMS.UI.Controllers
                 }
 
                 ViewBag.LessonID = new SelectList(db.Lessons, "LessonID", "LessonTitle", lessonView.LessonID);
-                return View(lessonView);
+                return View("Index");
             }
             return View();
         }

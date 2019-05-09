@@ -29,11 +29,11 @@
         <th>
             @Html.DisplayName("Job ID")
         </th>
-        <th>
+        @*<th>
             @Html.DisplayName("Job Dept")
-        </th>
+        </th>*@
         <th>
-            @Html.DisplayName("Reports to:")
+            @Html.DisplayName("Reports to Manager ID:")
         </th>
         <th></th>
     </tr>
@@ -56,9 +56,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.JobID)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Job)
-            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.JobID)
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.ReportsToID)
             </td>
@@ -67,7 +67,7 @@
                 {
                     @Html.ActionLink("Edit", "Edit", new { id = item.UserID })@: |
                 @Html.ActionLink("Delete", "Delete", new { id = item.UserID }) @:|
-                @Html.ActionLink("Details", "Details", new { id = item.UserID })@: |
+                @Html.ActionLink("Details", "Details", new { id = item.UserID })
 
                 }
             </td>
