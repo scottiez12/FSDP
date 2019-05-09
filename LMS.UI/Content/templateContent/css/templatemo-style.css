@@ -11,9 +11,13 @@ https://templatemo.com/tm-516-known
 body {
     background: #ffffff;
     font-family: 'Nunito', sans-serif;
-    overflow-x: hidden;
+    /*overflow-x: hidden;
     padding-top: 8em;
-    min-height: 85vh;
+    min-height: 85vh;*/
+    /*Trying flex to fix the footer problem*/
+     display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 
@@ -755,9 +759,15 @@ footer {
     background: #252020;
     /*padding: 0 0;*/
     /*position: absolute;*/
-    bottom: 0;
+
+
+    /*bottom: 0;
     width: 100%;
-    padding-bottom:0;
+    padding-bottom:0;*/
+/*trying flex to fix footer*/
+flex: 0 0 50px;/*or just height:50px;*/
+  margin-top: auto;
+
 
 }
 
