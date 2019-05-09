@@ -23,13 +23,13 @@
                     </div>
                     <div class="col-md-12 col-sm-12">
                         <div class="form-group">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Name" } })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-12 col-sm-12">
                         <div class="form-group">
-                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control", @placeholder = "Name" } })
+                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control", @placeholder = "Subject" } })
                             @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
                         </div>
                     </div>

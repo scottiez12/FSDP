@@ -30,6 +30,9 @@
     <link href="~/Content/templateContent/css/templatemo-style.css" rel="stylesheet" />
     <!--CUSTOM CSS-->
     <link href="~/Content/css/_customCSS.css" rel="stylesheet" />
+    <!--jQuery Table Styles-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+
 
 </head>
 <body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
@@ -69,10 +72,10 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="listbox">
-                            <li><a href="@Url.Action("About", "Home")" role="option" class="smoothScroll">Documentation</a></li>
-                            <li><a href="#" role="option" class="smoothScroll">Resume</a></li>
+                            <li><a href="~/Content/documents/sZieglerProjectDoc2.0.docx"  target="_blank" role="option" class="smoothScroll">Documentation</a></li>
+                            <li><a href="~/Content/documents/Scott Ziegler Resume Coding.docx"  target="_blank" role="option" class="smoothScroll">Resume</a></li>
                         </ul>
-                    </li>
+                    </li> 
                     @if (Request.IsAuthenticated)
                     {
 
@@ -168,8 +171,6 @@
 
     @RenderBody()
     <!-- HOME -->
-
-
     <!-- FEATURE -->
 
 
@@ -269,14 +270,19 @@
     <script src="~/Content/templateContent/js/owl.carousel.min.js"></script>
     <script src="~/Content/templateContent/js/smoothscroll.js"></script>
     <script src="~/Content/templateContent/js/custom.js"></script>
+    <!--jQuery UI-->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
     <!--Custom JS-->
     <script src="~/Content/js/_customJS.js"></script>
+
+    <!--TESTING TABLE FUNCTIONALITY-->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
    
-
 </body>
 </html>

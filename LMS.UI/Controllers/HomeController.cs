@@ -50,7 +50,7 @@ namespace IdentitySample.Controllers
 
                 //Create and configure the Mail message (letter)
                 MailMessage msg = new MailMessage("admin@scottiez.com", //from
-                    contact.Email, //where we are sending to
+                    "ziggish@att.net", //where we are sending to
                     contact.Subject, //subject of the message
                     body);
 
@@ -81,7 +81,7 @@ namespace IdentitySample.Controllers
 
                 //send the user to the ContactConfirmation View
                 //pass the contact object with it 
-                return View("ContactConfirmation", contact);
+                return View("ConfirmPartial", contact);
 
             }//if
             else
